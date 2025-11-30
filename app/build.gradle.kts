@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     // TODO: Add the dagger hilt and ksp plugins here
     id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp") version "2.2.10-2.0.2"
+    id("com.google.devtools.ksp")
 }
 
 android {
