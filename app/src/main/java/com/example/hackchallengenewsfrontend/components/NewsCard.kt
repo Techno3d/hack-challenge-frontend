@@ -1,6 +1,7 @@
 package com.example.hackchallengenewsfrontend.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,9 +23,11 @@ fun NewsCard(
     title: String,
     thumbnail_url: String,
     thumbnail_alt_text: String? = null,
+    onCardClick: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier.background(Color.LightGray)
+            .clickable { onCardClick() }
     ) {
         AsyncImage(
             model = thumbnail_url,
@@ -40,5 +43,8 @@ fun NewsCard(
 @Preview
 @Composable
 fun NewsCardPreview() {
-    NewsCard("Winter storm snarls flights for post-Thanksgiving travelers in Chicago", "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg", "Winter Storm Snarls Air Travel In Chicago")
+    NewsCard("Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
+        "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
+        "Winter Storm Snarls Air Travel In Chicago",
+        {})
 }
