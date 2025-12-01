@@ -34,8 +34,11 @@ class MainActivity : ComponentActivity() {
                             startDestination = "NewsScreen"
                         ) {
                             composable("NewsScreen") {
-                                NewsScreen()
+                                NewsScreen(viewArticle = { url ->
+                                    navController.navigate("article/$url")
+                                })
                             }
+                            composable("article/{url}") {  }
                         }
                     }
                 }
