@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 
 @Composable
-fun newsCard(
+fun NewsCard(
     title: String,
     thumbnail_url: String,
     thumbnail_alt_text: String? = null,
@@ -39,6 +39,6 @@ fun newsCard(
 
 @Preview
 @Composable
-fun newsCardPreview() {
-    newsCard("Winter storm snarls flights for post-Thanksgiving travelers in Chicago", "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg", "Winter Storm Snarls Air Travel In Chicago")
+fun NewsCardPreview() {
+    NewsCard("Winter storm snarls flights for post-Thanksgiving travelers in Chicago", "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg", "Winter Storm Snarls Air Travel In Chicago")
 }
