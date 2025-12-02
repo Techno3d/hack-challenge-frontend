@@ -12,12 +12,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.hackchallengenewsfrontend.screens.NewsScreen
 import com.example.hackchallengenewsfrontend.ui.theme.HackChallengeNewsFrontendTheme
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -35,30 +39,20 @@ class MainActivity : ComponentActivity() {
                         ) {
                             composable("NewsScreen") {
                                 NewsScreen(viewArticle = { url ->
-                                    navController.navigate("article/$url")
+                                    val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
+                                    navController.navigate("article/$encodedUrl")
                                 })
                             }
-                            composable("article/{url}") {  }
+                            composable(
+                                "article/{url}",
+                                arguments = listOf(navArgument("url") {type = NavType.StringType})
+                            ) { backStackEntry ->
+                                Text("This is the article screen for: ${backStackEntry.arguments?.getString("url")}")
+                            }
                         }
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HackChallengeNewsFrontendTheme {
-        Greeting("Android")
     }
 }

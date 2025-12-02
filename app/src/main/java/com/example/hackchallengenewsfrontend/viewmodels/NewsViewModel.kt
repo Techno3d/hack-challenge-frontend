@@ -21,7 +21,7 @@ class NewsViewModel @Inject constructor(
         val filters: List<NewsTags> = emptyList<NewsTags>(),
     ) {
         val filteredFeed: List<News>
-            get() = feed.filter { article ->
+            get() = if (filters.isEmpty()) feed else feed.filter { article ->
                 for(tag in article.tags) {
                     return@filter filters.contains(tag)
                 }
