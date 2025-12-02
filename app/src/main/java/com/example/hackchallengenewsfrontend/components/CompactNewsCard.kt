@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,24 +41,22 @@ fun CompactNewsCard(
             .clickable { onCardClick() },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column(modifier = Modifier.fillMaxWidth(.5f)
-            .height(200.dp)
-            .padding(6.dp),
-            verticalArrangement = Arrangement.SpaceBetween){
-            Column(){
-                Text(text = newsSource)
-                Text(text = title)
-            }
-            Text(text = author)
-        }
         AsyncImage(
             model = thumbnailUrl,
             contentDescription = thumbnailDescription,
 //            placeholder = ,
-            modifier = Modifier.width(200.dp)
-                .height(200.dp)
-                .padding(12.dp)
+            modifier = Modifier.width(115.dp)
+                .height(115.dp)
+                .padding(13.dp)
         )
+        Column(modifier = Modifier.fillMaxWidth()
+            .height(115.dp)
+            .padding(6.dp),
+            verticalArrangement = Arrangement.SpaceBetween){
+            Text(text = newsSource, fontSize = 15.sp)
+            Text(text = title, fontSize = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Left)
+            Text(text = author, fontSize = 12.sp)
+        }
     }
 
 }
