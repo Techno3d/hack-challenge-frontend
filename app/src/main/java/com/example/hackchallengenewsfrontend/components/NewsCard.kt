@@ -20,9 +20,10 @@ import coil3.compose.AsyncImage
 
 @Composable
 fun NewsCard(
+    newsSource: String,
     title: String,
-    thumbnail_url: String,
-    thumbnail_alt_text: String? = null,
+    thumbnailUrl: String,
+    thumbnailDescription: String? = null,
     onCardClick: () -> Unit = {}
 ) {
     Column(
@@ -30,21 +31,25 @@ fun NewsCard(
             .clickable { onCardClick() }
     ) {
         AsyncImage(
-            model = thumbnail_url,
-            contentDescription = thumbnail_alt_text,
+            model = thumbnailUrl,
+            contentDescription = thumbnailDescription,
 //            placeholder = ,
             modifier = Modifier.width(300.dp).height(200.dp).padding(horizontal = 2.dp)
         )
         Spacer(modifier = Modifier.height(5.dp).fillMaxWidth().background(Color.Gray))
+        Text(newsSource, fontSize = 15.sp, textAlign = TextAlign.Left, modifier = Modifier.padding(5.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Text(title, fontSize = 20.sp, textAlign = TextAlign.Left, modifier = Modifier.padding(5.dp))
+
     }
 }
 
 @Preview
 @Composable
 fun NewsCardPreview() {
-    NewsCard("Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
-        "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
-        "Winter Storm Snarls Air Travel In Chicago",
-        {})
+    NewsCard(newsSource = "Cornell Chronicle",
+        title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
+        thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
+        thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
+        onCardClick = {})
 }
