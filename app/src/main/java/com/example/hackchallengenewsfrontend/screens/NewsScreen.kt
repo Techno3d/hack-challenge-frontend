@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -35,13 +36,14 @@ fun NewsScreen(
         Modifier
             .fillMaxSize()
             .background(color = Color.Black)
-            .padding(top=20.dp)
+            .padding(top=30.dp, start = 22.dp, end = 22.dp)
     ) {
         // Header
         item {
             Text("Scope", modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp), fontSize = 40.sp, textAlign = TextAlign.Left, color = Color.White)
             Text("Home", modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp), fontSize = 20.sp, textAlign = TextAlign.Left, color = Color.LightGray)
             Spacer(Modifier.height(12.dp))
+            //TODO Change FilterRow to be not hard-coded
             FilterRow(
                 filters = listOf("Rock", "Hello", "CU Nooz"),
                 currentFiltersSelected = listOf("CU Nooz")
@@ -50,23 +52,38 @@ fun NewsScreen(
             Text("Top Stories", modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp), fontSize = 20.sp, textAlign = TextAlign.Left, color = Color.White)
             Spacer(Modifier.height(12.dp))
         }
+
         // Body
+        //TODO Change NewsCard/CompactNewsCard to be not hard-coded
         item {
             NewsCard("Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
                 "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
                 "Winter Storm Snarls Air Travel In Chicago",
                 {viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago")})
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+        //Temp UI for visualization
+        item {
+            CompactNewsCard(
+                title = "TEMP TITLE",
+                newsSource = "TEMP SOURCE",
+                author = "TEMP AUTHOR",
+                thumbnailUrl = "TEMP URL",
+                thumbnailDescription = "TEMP DESC",
+                onCardClick = {}
+            )
         }
         items(uiState.filteredFeed) { article ->
             CompactNewsCard(
                 title = article.title,
-                newsSource = "Goofy",
-                author = "Goofy 2",
+                newsSource = "TEMP SOURCE",
+                author = "TEMP AUTHOR",
                 thumbnailUrl = article.thumbnailUrl,
                 thumbnailDescription = article.thumbnailDescription,
                 onCardClick = {viewArticle(article.articleUrl)}
             )
         }
+
         // Footer
         item {
             Row(modifier = Modifier) {
