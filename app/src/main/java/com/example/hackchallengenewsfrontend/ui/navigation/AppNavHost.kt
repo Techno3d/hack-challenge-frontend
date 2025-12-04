@@ -55,7 +55,7 @@ fun BottomNavigationBar(navController : NavHostController){
 
         // TODO: Add real icon + selected state
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Headphones, contentDescription = "Search") },
+            icon = { Icon(Icons.Filled.Phone, contentDescription = "Search") },
             label = { Text("Audio") },
             selected = false,
             onClick = { /* TODO: Navigate to Audio */ }
