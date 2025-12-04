@@ -56,23 +56,26 @@ fun NewsScreen(
 
         // Body
         //TODO Change NewsCard/CompactNewsCard to be not hard-coded
-        val firstNewsCard = uiState.filteredFeed[0]
-        item {
+        if (!uiState.filteredFeed.isEmpty()) {
+            val firstNewsCard = uiState.filteredFeed[0]
+
+            item {
 //            NewsCard(newsSource = "Cornell Chronicle",
 //                title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
 //                thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
 //                thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
 //                onCardClick = {viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago")})
-            NewsCard(
-                title = firstNewsCard.title,
-                thumbnailUrl = firstNewsCard.thumbnailUrl,
-                thumbnailDescription = firstNewsCard.thumbnailDescription,
-                author = firstNewsCard.author,
-                newsSource = firstNewsCard.newsSource,
-                date = firstNewsCard.date.toString(),
-                onCardClick = {viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago")}
-            )
-            Spacer(modifier = Modifier.height(24.dp))
+                NewsCard(
+                    title = firstNewsCard.title,
+                    thumbnailUrl = firstNewsCard.thumbnailUrl,
+                    thumbnailDescription = firstNewsCard.thumbnailDescription,
+                    author = firstNewsCard.author,
+                    newsSource = firstNewsCard.newsSource,
+                    date = firstNewsCard.date.toString(),
+                    onCardClick = { viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago") }
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+            }
         }
         //Temp UI for visualization
         item {
