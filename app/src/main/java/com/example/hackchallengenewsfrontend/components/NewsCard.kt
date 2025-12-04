@@ -2,7 +2,9 @@ package com.example.hackchallengenewsfrontend.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,26 +22,32 @@ import coil3.compose.AsyncImage
 
 @Composable
 fun NewsCard(
-    newsSource: String,
     title: String,
     thumbnailUrl: String,
     thumbnailDescription: String? = null,
+    author: String,
+    newsSource: String,
+    date: String,
     onCardClick: () -> Unit = {}
 ) {
     Column(
-        modifier = Modifier.background(Color.LightGray)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+            .background(Color.Black)
+            .padding(10.dp)
             .clickable { onCardClick() }
     ) {
         AsyncImage(
             model = thumbnailUrl,
             contentDescription = thumbnailDescription,
-//            placeholder = ,
             modifier = Modifier.width(300.dp).height(200.dp).padding(horizontal = 2.dp)
         )
-        Spacer(modifier = Modifier.height(5.dp).fillMaxWidth().background(Color.Gray))
-        Text(newsSource, fontSize = 15.sp, textAlign = TextAlign.Left, modifier = Modifier.padding(5.dp))
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(title, fontSize = 20.sp, textAlign = TextAlign.Left, modifier = Modifier.padding(5.dp))
+        Text(newsSource, fontSize = 15.sp, textAlign = TextAlign.Left, color = Color.White)
+        Text(title, fontSize = 20.sp, textAlign = TextAlign.Left, color = Color.White)
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(date, fontSize = 12.sp, color = Color.Gray)
+            Text(author, fontSize = 12.sp, color = Color.Gray)
+        }
 
     }
 }
@@ -50,6 +58,8 @@ fun NewsCardPreview() {
     NewsCard(newsSource = "Cornell Chronicle",
         title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
         thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
+        author = "Hello",
         thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
+        date = "19/2/22",
         onCardClick = {})
 }
