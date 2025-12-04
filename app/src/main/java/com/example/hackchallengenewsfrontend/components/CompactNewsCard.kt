@@ -31,6 +31,7 @@ fun CompactNewsCard(
     author: String,
     thumbnailUrl: String,
     thumbnailDescription: String,
+    date: String,
     onCardClick: () -> Unit
 ){
     Row(
@@ -55,7 +56,7 @@ fun CompactNewsCard(
             verticalArrangement = Arrangement.SpaceBetween){
             Text(text = newsSource, fontSize = 15.sp)
             Text(text = title, fontSize = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Left)
-            Text(text = author, fontSize = 12.sp)
+            Text(text = "$date $author", fontSize = 12.sp)
         }
     }
 
@@ -69,6 +70,7 @@ fun CompactNewsCardPreview(){
         author = "Goated Author",
         thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
         thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
+        date = "no",
         onCardClick = {})
 }
 

@@ -29,9 +29,14 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        val json = Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+            coerceInputValues = true
+        }
         return Retrofit.Builder()
-            .baseUrl("http://127.0.0.1:5000")
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .baseUrl("http://localhost:5000/")
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .client(okHttpClient)
             .build()
     }

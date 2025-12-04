@@ -1,6 +1,6 @@
 package com.example.hackchallengenewsfrontend.viewmodels
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class News (
     val title: String,
@@ -8,7 +8,7 @@ data class News (
     val newsSource: String,
     val articleUrl: String,
     val tags: List<String>,
-    val thumbnailUrl: String,
+    val thumbnailUrl: String?,
     val thumbnailDescription: String?,
-    val date: LocalDate?,
+    val date: LocalDateTime?,
 )

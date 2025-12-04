@@ -3,7 +3,7 @@ package com.example.hackchallengenewsfrontend.networking
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.hackchallengenewsfrontend.viewmodels.News
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,7 +15,7 @@ class ArticleRepository @Inject constructor(
     suspend fun getAllArticles(): Result<List<News>> {
         val response = articleApiService.getAllArticles()
         if(!response.isSuccessful) return Result.failure(Throwable(message = response.errorBody().toString()))
-        val articles = response.body()?.articles!!.map { article ->
+        val articles = response.body()?.map { article ->
             News(
                 title = article.title,
                 author = article.author,
@@ -24,9 +24,9 @@ class ArticleRepository @Inject constructor(
                 tags = listOf(article.outlet.name),
                 thumbnailUrl = article.imageUrl,
                 thumbnailDescription = null,
-                date = LocalDate.parse(article.publishingDate)
+                date = LocalDateTime.parse(article.publishingDate)
             )
         }
-        return Result.success(articles)
+        return Result.success(articles!!)
     }
 }
