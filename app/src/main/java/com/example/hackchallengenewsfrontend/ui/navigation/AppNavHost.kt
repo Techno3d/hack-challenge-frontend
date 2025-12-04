@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -43,23 +45,28 @@ fun ScopeApp (){
 @Composable
 fun BottomNavigationBar(navController : NavHostController){
     NavigationBar(){
+        // TODO: Add selected state
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
             label = { Text("Home") },
-            selected = true,
-            onClick = { navController.navigate("NewsScreen") }
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-            label = { Text("Search") },
             selected = false,
-            onClick = { /* TODO: Navigate to search */ }
+            onClick = { /* TODO: Navigate to Home */ }
         )
+
+        // TODO: Add real icon + selected state
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
-            label = { Text("Profile") },
+            icon = { Icon(Icons.Filled.Headphones, contentDescription = "Search") },
+            label = { Text("Audio") },
             selected = false,
-            onClick = { /* TODO: Navigate to profile */ }
+            onClick = { /* TODO: Navigate to Audio */ }
+        )
+
+        //TODO: Add real icon + selected state
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Favorite, contentDescription = "Profile") },
+            label = { Text("Saved") },
+            selected = false,
+            onClick = { /* TODO: Navigate to Saved */ }
         )
     }
 }
