@@ -1,4 +1,4 @@
-package com.example.hackchallengenewsfrontend.screens
+package com.example.hackchallengenewsfrontend.ui.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -17,17 +17,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.hackchallengenewsfrontend.components.CompactNewsCard
-import com.example.hackchallengenewsfrontend.components.FilterRow
-import com.example.hackchallengenewsfrontend.components.NewsCard
-import com.example.hackchallengenewsfrontend.components.NewsCardPreview
+import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
+import com.example.hackchallengenewsfrontend.ui.components.NewsCard
 import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
-import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
