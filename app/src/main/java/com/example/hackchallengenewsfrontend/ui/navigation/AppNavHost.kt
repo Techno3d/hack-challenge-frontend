@@ -15,10 +15,12 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -44,12 +46,22 @@ fun ScopeApp (){
 
 @Composable
 fun BottomNavigationBar(navController : NavHostController){
-    NavigationBar(){
-        // TODO: Add selected state
+    val colors = NavigationBarItemDefaults.colors(
+        selectedIconColor = Color.White,
+        selectedTextColor = Color.White,
+        unselectedIconColor = Color.LightGray,
+        unselectedTextColor = Color.LightGray
+    )
+
+    NavigationBar(
+        containerColor = Color.Black
+    ){
+        // TODO: Add selected state, change selected icon color to only fill icon, not icon background
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
             label = { Text("Home") },
-            selected = false,
+            colors = colors,
+            selected = true,
             onClick = { /* TODO: Navigate to Home */ }
         )
 
@@ -57,6 +69,7 @@ fun BottomNavigationBar(navController : NavHostController){
         NavigationBarItem(
             icon = { Icon(Icons.Filled.Phone, contentDescription = "Search") },
             label = { Text("Audio") },
+            colors = colors,
             selected = false,
             onClick = { /* TODO: Navigate to Audio */ }
         )
@@ -65,6 +78,7 @@ fun BottomNavigationBar(navController : NavHostController){
         NavigationBarItem(
             icon = { Icon(Icons.Default.Favorite, contentDescription = "Profile") },
             label = { Text("Saved") },
+            colors = colors,
             selected = false,
             onClick = { /* TODO: Navigate to Saved */ }
         )
