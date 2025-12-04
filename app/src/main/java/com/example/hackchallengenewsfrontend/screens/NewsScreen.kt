@@ -56,8 +56,14 @@ fun NewsScreen(
 
         // Body
         //TODO Change NewsCard/CompactNewsCard to be not hard-coded
+<<<<<<< HEAD
         if(!uiState.filteredFeed.isEmpty()) {
             val firstNewsCard = uiState.filteredFeed[0]
+=======
+        if (!uiState.filteredFeed.isEmpty()) {
+            val firstNewsCard = uiState.filteredFeed[0]
+
+>>>>>>> origin/screens
             item {
 //            NewsCard(newsSource = "Cornell Chronicle",
 //                title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
@@ -71,7 +77,7 @@ fun NewsScreen(
                     author = firstNewsCard.author,
                     newsSource = firstNewsCard.newsSource,
                     date = firstNewsCard.date.toString(),
-                    onCardClick = {viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago")}
+                    onCardClick = { viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago") }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
