@@ -18,15 +18,17 @@ class NewsViewModel @Inject constructor(
 
     data class NewsUIState(
         val feed: List<News> = emptyList<News>(),
-        val filters: List<NewsTags> = emptyList<NewsTags>(),
+        val filters: List<String> = emptyList<String>(),
     ) {
         val filteredFeed: List<News>
-            get() = if (filters.isEmpty()) feed else feed.filter { article ->
-                for(tag in article.tags) {
-                    return@filter filters.contains(tag)
-                }
-                return@filter false
-            }
+            get() = feed
+        // Use the below if we implement tagging
+//            get() = if (filters.isEmpty()) feed else feed.filter { article ->
+//                for(tag in article.tags) {
+//                    return@filter filters.contains(tag)
+//                }
+//                return@filter false
+//            }
     }
 
     init {

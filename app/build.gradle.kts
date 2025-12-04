@@ -5,6 +5,8 @@ plugins {
     // TODO: Add the dagger hilt and ksp plugins here
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+//    kotlin("jvm") version "2.2.0" // or kotlin("multiplatform") or any other kotlin plugin
+    kotlin("plugin.serialization") version "2.2.0"
 }
 
 android {

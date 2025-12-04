@@ -29,23 +29,18 @@ object NetworkModule {
     @Provides
     @Singleton
     fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
-//        val json = Json {
-//            ignoreUnknownKeys = true
-//            isLenient = true
-//            coerceInputValues = true
-//        }
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("http://127.0.0.1:5000")
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .client(okHttpClient)
             .build()
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideApiService(retrofit: Retrofit): ___Service {
-//        return retrofit.create()
-//    }
+    @Provides
+    @Singleton
+    fun provideApiService(retrofit: Retrofit): ArticleApiService {
+        return retrofit.create(ArticleApiService::class.java)
+    }
 
     // TODO: Provide Retrofit, provide APIService, provide
 }
