@@ -1,5 +1,7 @@
 package com.example.hackchallengenewsfrontend.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +29,7 @@ import com.example.hackchallengenewsfrontend.components.NewsCardPreview
 import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
 import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewsScreen(
     viewArticle: (String) -> Unit,
@@ -45,10 +48,10 @@ fun NewsScreen(
             Text("Home", modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp), fontSize = 20.sp, textAlign = TextAlign.Left, color = Color.LightGray)
             Spacer(Modifier.height(12.dp))
             //TODO Change FilterRow to be not hard-coded
-            FilterRow(
-                filters = listOf("Rock", "Hello", "CU Nooz"),
-                currentFiltersSelected = listOf("CU Nooz")
-            ) { }
+//            FilterRow(
+//                filters = listOf("Rock", "Hello", "CU Nooz"),
+//                currentFiltersSelected = listOf("CU Nooz")
+//            ) { }
             Spacer(Modifier.height(24.dp))
             Text("Top Stories", modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp), fontSize = 20.sp, textAlign = TextAlign.Left, color = Color.White)
             Spacer(Modifier.height(12.dp))
@@ -56,8 +59,8 @@ fun NewsScreen(
 
         // Body
         //TODO Change NewsCard/CompactNewsCard to be not hard-coded
-        if(!uiState.filteredFeed.isEmpty()) {
-            val firstNewsCard = uiState.filteredFeed[0]
+        if(!uiState.feed.isEmpty()) {
+            val firstNewsCard = uiState.feed[0]
             item {
 //            NewsCard(newsSource = "Cornell Chronicle",
 //                title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
@@ -66,33 +69,23 @@ fun NewsScreen(
 //                onCardClick = {viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago")})
                 NewsCard(
                     title = firstNewsCard.title,
-                    thumbnailUrl = firstNewsCard.thumbnailUrl,
+                    thumbnailUrl = firstNewsCard.thumbnailUrl?:"",
                     thumbnailDescription = firstNewsCard.thumbnailDescription,
                     author = firstNewsCard.author,
                     newsSource = firstNewsCard.newsSource,
                     date = firstNewsCard.date.toString(),
-                    onCardClick = {viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago")}
+                    onCardClick = {viewArticle(firstNewsCard.articleUrl)}
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
-        //Temp UI for visualization
-        item {
-            CompactNewsCard(
-                title = "TEMP TITLE",
-                newsSource = "TEMP SOURCE",
-                author = "TEMP AUTHOR",
-                thumbnailUrl = "TEMP URL",
-                thumbnailDescription = "TEMP DESC",
-                onCardClick = {}
-            )
-        }
-        items(uiState.filteredFeed.slice(1..(uiState.filteredFeed.size-1))) { article ->
+        items(uiState.feed.slice(1..(uiState.feed.size-1))) { article ->
             CompactNewsCard(
                 title = article.title,
-                newsSource = "TEMP SOURCE",
-                author = "TEMP AUTHOR",
-                thumbnailUrl = article.thumbnailUrl,
+                newsSource = article.newsSource,
+                date = article.date.toString(),
+                author = article.author,
+                thumbnailUrl = article.thumbnailUrl?:"",
                 thumbnailDescription = article.thumbnailDescription ?: "",
                 onCardClick = {viewArticle(article.articleUrl)}
             )
