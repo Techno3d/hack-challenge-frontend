@@ -60,7 +60,7 @@ fun NewsCard(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun NewsCardPreview() {
     NewsCard(newsSource = "Cornell Chronicle",
