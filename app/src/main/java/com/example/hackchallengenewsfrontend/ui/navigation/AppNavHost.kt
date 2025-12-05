@@ -114,12 +114,6 @@ fun SetupNavHost(navController : NavHostController){
         ) {
         }
         composable(
-            "listen/{url}",
-            arguments = listOf(navArgument("url") {type = NavType.StringType})
-        ) { backStackEntry ->
-            Text("This is the article screen for: ${backStackEntry.arguments?.getString("url")}")
-        }
-        composable(
             "saved",
         ) {
         }

@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,6 +29,12 @@ import com.example.hackchallengenewsfrontend.ui.components.NewsCard
 import com.example.hackchallengenewsfrontend.ui.theme.Background
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
+import java.time.Duration
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import kotlin.math.abs
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -60,7 +64,7 @@ fun NewsScreen(
             Text(
                 "Home",
                 modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
-                fontSize = 36.sp,
+                fontSize = 24.sp,
                 textAlign = TextAlign.Left,
                 color = Secondary
             )
@@ -90,14 +94,14 @@ fun NewsScreen(
                     thumbnailDescription = firstNewsCard.thumbnailDescription,
                     author = firstNewsCard.author,
                     newsSource = firstNewsCard.newsSource,
-                    date = firstNewsCard.date.toString(),
+                    date = firstNewsCard.date?.toHumanReadable() ?: firstNewsCard.date.toString(),
                     onCardClick = { viewArticle(firstNewsCard.articleUrl) }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
             if (uiState.feed.size < popularItemsList) return@item
             val laterItems = uiState.feed.slice(1..popularItemsList)
-            Row {
+            Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                 for (i in 0..1) {
                     Column(modifier = Modifier.weight(0.5f)) {
                         for (j in i..(laterItems.size - 1) step 2) {
@@ -107,7 +111,8 @@ fun NewsScreen(
                                 thumbnailDescription = laterItems[j].thumbnailDescription,
                                 author = laterItems[j].author,
                                 newsSource = laterItems[j].newsSource,
-                                date = laterItems[j].date.toString(),
+                                date = laterItems[j].date?.toHumanReadable() ?: laterItems[j].date.toString(),
+                                isCompact = true,
                                 onCardClick = { viewArticle(laterItems[j].articleUrl) }
                             )
                         }
@@ -123,7 +128,7 @@ fun NewsScreen(
             CompactNewsCard(
                 title = article.title,
                 newsSource = article.newsSource,
-                date = article.date.toString(),
+                date = article.date?.toHumanReadable() ?: article.date.toString(),
                 author = article.author,
                 thumbnailUrl = article.thumbnailUrl ?: "",
                 thumbnailDescription = article.thumbnailDescription ?: "",
@@ -131,4 +136,36 @@ fun NewsScreen(
             )
         }
     }
+}
+
+
+// Lowk from copilot
+@RequiresApi(Build.VERSION_CODES.O)
+fun humanReadableTimeAgo(then: Instant, now: Instant = Instant.now()): String {
+    val diffSeconds = Duration.between(then, now).seconds
+    if (diffSeconds == 0L) return "just now"
+
+    val seconds = abs(diffSeconds)
+
+    val (value, unit) = when {
+        seconds < 5 -> return "just now"
+        seconds < 60 -> seconds to "s"
+        seconds < 60 * 60 -> (seconds / 60) to "m"
+        seconds < 60 * 60 * 24 -> (seconds / (60 * 60)) to "h"
+        seconds < 60 * 60 * 24 * 7 -> (seconds / (60 * 60 * 24)) to "d"
+        seconds < 60 * 60 * 24 * 30 -> (seconds / (60 * 60 * 24 * 7)) to "w"
+        seconds < 60 * 60 * 24 * 365 -> (seconds / (60 * 60 * 24 * 30)) to "mo"
+        else -> (seconds / (60 * 60 * 24 * 365)) to "y"
+    }
+
+    return "${value}${unit} ago"
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun LocalDateTime.toHumanReadable(
+    now: ZonedDateTime = ZonedDateTime.now(),
+    zone: ZoneId = ZoneId.systemDefault()
+): String {
+    val thenInstant = this.atZone(zone).toInstant()
+    return humanReadableTimeAgo(thenInstant, now.toInstant())
 }

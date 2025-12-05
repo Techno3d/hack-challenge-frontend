@@ -4,23 +4,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import com.example.hackchallengenewsfrontend.ui.theme.Articles
+import com.example.hackchallengenewsfrontend.ui.theme.Primary
+import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 
 @Composable
 fun NewsCard(
@@ -31,29 +31,37 @@ fun NewsCard(
     newsSource: String,
     date: String,
     modifier : Modifier = Modifier,
+    isCompact: Boolean = false,
+    isAudio: Boolean = false,
     onCardClick: () -> Unit = {},
+    onPlayButtonClicked: () -> Unit = {}
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(if(isCompact) 4.dp else 8.dp),
         modifier = modifier
-            .background(Color.Black)
+            .clip(RoundedCornerShape(10.dp))
+            .background(Articles)
             .clickable { onCardClick() }
     ) {
         AsyncImage(
             model = thumbnailUrl,
             contentDescription = thumbnailDescription,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(4f / 3f)
         )
-        Column(modifier = Modifier
-            .padding(12.dp)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(if(isCompact) 5.dp else 12.dp),
+            modifier = Modifier
+                .padding(if(isCompact) 3.dp else 12.dp)
         ) {
-            Text(newsSource, fontSize = 15.sp, textAlign = TextAlign.Left, color = Color.White)
-            Text(title, fontSize = 20.sp, textAlign = TextAlign.Left, color = Color.White)
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(date, fontSize = 12.sp, color = Color.Gray)
-                Text(author, fontSize = 12.sp, color = Color.Gray)
+            Text(newsSource, fontSize = if(isCompact) 10.sp else 14.sp, textAlign = TextAlign.Left, color = Primary)
+            Text(title, fontSize = if(isCompact) 14.sp else 18.sp, textAlign = TextAlign.Left, color = Primary, lineHeight = if(isCompact) 16.sp else 20.sp)
+            if(!isAudio) {
+                Text("$date $author", fontSize = 12.sp, color = Secondary)
+            } else {
+                // TODO: Play Widget
             }
         }
 

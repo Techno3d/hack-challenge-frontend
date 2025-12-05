@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.hackchallengenewsfrontend.ui.theme.Articles
 import com.example.hackchallengenewsfrontend.ui.theme.HackChallengeNewsFrontendTheme
+import com.example.hackchallengenewsfrontend.ui.theme.Primary
+import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 
 @Composable
 fun CompactNewsCard(
@@ -42,6 +44,7 @@ fun CompactNewsCard(
 ){
     Row(
         modifier = modifier.fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
             .background(Articles)
             .clickable { onCardClick() },
         horizontalArrangement = Arrangement.SpaceBetween
@@ -60,9 +63,9 @@ fun CompactNewsCard(
             .height(115.dp)
             .padding(vertical = 12.dp),
             verticalArrangement = Arrangement.SpaceBetween){
-            Text(text = newsSource, fontSize = 15.sp, color = Color.White)
-            Text(text = title, fontSize = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Left, color = Color.White)
-            Text(text = "$date $author", fontSize = 12.sp, color = Color.White)
+            Text(text = newsSource, fontSize = 15.sp, color = Primary)
+            Text(text = title, fontSize = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Left, color = Primary)
+            Text(text = "$date $author", fontSize = 12.sp, color = Secondary)
         }
     }
 
