@@ -15,7 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.hackchallengenewsfrontend.screens.NewsScreen
+import com.example.hackchallengenewsfrontend.ui.screens.NewsScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 

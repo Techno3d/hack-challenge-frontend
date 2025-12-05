@@ -16,8 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.hackchallengenewsfrontend.components.CompactNewsCard
-import com.example.hackchallengenewsfrontend.components.FilterRow
+import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
+import com.example.hackchallengenewsfrontend.ui.components.FilterRow
 
 @Composable
 fun SavedScreen(){
@@ -40,7 +40,8 @@ fun SavedScreen(){
                 author = "TEMP AUTHOR",
                 thumbnailUrl = "TEMP URL",
                 thumbnailDescription = "TEMP DESC",
-                onCardClick = {}
+                onCardClick = {},
+                date = "TEMP DATE"
             )
             Spacer(modifier = Modifier.height(24.dp))
         }

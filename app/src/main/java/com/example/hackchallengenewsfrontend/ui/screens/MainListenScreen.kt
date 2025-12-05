@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.hackchallengenewsfrontend.components.CompactNewsCard
-import com.example.hackchallengenewsfrontend.components.FilterRow
-import com.example.hackchallengenewsfrontend.components.NewsCard
+import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
+import com.example.hackchallengenewsfrontend.ui.components.FilterRow
+import com.example.hackchallengenewsfrontend.ui.components.NewsCard
 import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
 
 @Composable
@@ -140,7 +140,8 @@ fun MainListenScreen(
                 author = "TEMP AUTHOR",
                 thumbnailUrl = "TEMP URL",
                 thumbnailDescription = "TEMP DESC",
-                onCardClick = {}
+                onCardClick = {},
+                date = "TEMP DATE"
             )
         }
     }

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.hackchallengenewsfrontend.ui.theme.Articles
+import com.example.hackchallengenewsfrontend.ui.theme.HackChallengeNewsFrontendTheme
 
 @Composable
 fun CompactNewsCard(
@@ -70,12 +71,17 @@ fun CompactNewsCard(
 @Preview(showBackground = true)
 @Composable
 fun CompactNewsCardPreview(){
-    CompactNewsCard(newsSource = "Cornell Chronicle",
-        title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
-        author = "Goated Author",
-        thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
-        thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
-        date = "no",
-        onCardClick = {})
+    HackChallengeNewsFrontendTheme {
+        CompactNewsCard(
+            newsSource = "Cornell Chronicle",
+            title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
+            author = "Goated Author",
+            thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
+            thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
+            date = "no",
+            onCardClick = {})
+    }
 }
+
+
 
