@@ -171,7 +171,7 @@ fun IndividualListenScreen() {
                     else painterResource(id = R.drawable.ic_playbutton),
                     contentDescription = if (isPlaying) "Pause" else "Play",
                     tint = Color.White,
-                    modifier = Modifier.size(72.dp)
+                    modifier = Modifier.size(30.dp)
                 )
             }
 
@@ -198,7 +198,7 @@ fun IndividualListenScreen() {
                 painter = painterResource(id = R.drawable.ic_volumedown),
                 contentDescription = "Volume Down",
                 tint = Color.White,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(16.dp)
             )
 
             // Volume Slider
