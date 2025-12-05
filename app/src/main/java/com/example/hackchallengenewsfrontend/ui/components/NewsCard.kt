@@ -30,8 +30,8 @@ fun NewsCard(
     author: String,
     newsSource: String,
     date: String,
+    modifier : Modifier = Modifier,
     onCardClick: () -> Unit = {},
-    modifier : Modifier = Modifier
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
