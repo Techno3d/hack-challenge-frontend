@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -30,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.screens.NewsScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -62,7 +64,7 @@ fun BottomNavigationBar(navController : NavHostController){
         val currentRoute = navBackStackEntry?.destination?.route
         // TODO: Add selected state, change selected icon color to only fill icon, not icon background
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
+            icon = { Icon(painter = painterResource(id = R.drawable.ic_home), contentDescription = "Home") },
             label = { Text("Home") },
             colors = colors,
             selected = currentRoute.equals("NewsScreen"),
@@ -71,7 +73,7 @@ fun BottomNavigationBar(navController : NavHostController){
 
         // TODO: Add real icon + selected state
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Phone, contentDescription = "Audio") },
+            icon = { Icon(painter = painterResource(id = R.drawable.ic_headphone), contentDescription = "Audio") },
             label = { Text("Audio") },
             colors = colors,
             selected = currentRoute.equals("audio"),
@@ -80,7 +82,7 @@ fun BottomNavigationBar(navController : NavHostController){
 
         //TODO: Add real icon + selected state
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Favorite, contentDescription = "Saved") },
+            icon = { Icon(painter = painterResource(id = R.drawable.ic_bookmark), contentDescription = "Saved") },
             label = { Text("Saved") },
             colors = colors,
             selected = currentRoute.equals("saved"),
