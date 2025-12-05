@@ -60,9 +60,9 @@ fun CompactNewsCard(
             .height(115.dp)
             .padding(vertical = 12.dp),
             verticalArrangement = Arrangement.SpaceBetween){
-            Text(text = newsSource, fontSize = 15.sp)
-            Text(text = title, fontSize = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Left)
-            Text(text = "$date $author", fontSize = 12.sp)
+            Text(text = newsSource, fontSize = 15.sp, color = Color.White)
+            Text(text = title, fontSize = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Left, color = Color.White)
+            Text(text = "$date $author", fontSize = 12.sp, color = Color.White)
         }
     }
 
