@@ -37,7 +37,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import coil3.compose.AsyncImagePainter.State.Empty.painter
+import com.example.hackchallengenewsfrontend.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,7 +105,7 @@ fun IndividualListenScreen() {
 
             // Bookmark icon (top right)
             Icon(
-                imageVector = Icons.Default.Favorite,
+                painter = painterResource(R.drawable.ic_bookmark),
                 contentDescription = "Save",
                 tint = Color.White,
                 modifier = Modifier
@@ -154,7 +157,7 @@ fun IndividualListenScreen() {
             // Skip Back 15s
             IconButton(onClick = { /* Handle skip back */ }) {
                 Icon(
-                    imageVector = Icons.Default.Phone,
+                    painter = painterResource(id = R.drawable.ic_skipbackward),
                     contentDescription = "Skip Back 15 Seconds",
                     tint = Color.White,
                     modifier = Modifier.size(32.dp)
@@ -164,7 +167,8 @@ fun IndividualListenScreen() {
             // Play / Pause Button
             IconButton(onClick = { isPlaying = !isPlaying }) {
                 Icon(
-                    imageVector = if (isPlaying) Icons.Default.Phone else Icons.Default.Phone,
+                    painter = if (isPlaying) painterResource(id = R.drawable.ic_pausebutton)
+                    else painterResource(id = R.drawable.ic_playbutton),
                     contentDescription = if (isPlaying) "Pause" else "Play",
                     tint = Color.White,
                     modifier = Modifier.size(72.dp)
@@ -174,7 +178,7 @@ fun IndividualListenScreen() {
             // Skip Forward 15s
             IconButton(onClick = { /* Handle skip forward */ }) {
                 Icon(
-                    imageVector = Icons.Default.Phone,
+                    painter = painterResource(id = R.drawable.ic_skipforward),
                     contentDescription = "Skip Forward 15 Seconds",
                     tint = Color.White,
                     modifier = Modifier.size(32.dp)
@@ -191,7 +195,7 @@ fun IndividualListenScreen() {
         ) {
             // Volume Down Icon
             Icon(
-                imageVector = Icons.Default.Phone,
+                painter = painterResource(id = R.drawable.ic_volumedown),
                 contentDescription = "Volume Down",
                 tint = Color.White,
                 modifier = Modifier.size(24.dp)
@@ -213,7 +217,7 @@ fun IndividualListenScreen() {
 
             // Volume Up Icon
             Icon(
-                imageVector = Icons.Default.Phone,
+                painter = painterResource(id = R.drawable.ic_volumeup),
                 contentDescription = "Volume Up",
                 tint = Color.White,
                 modifier = Modifier.size(24.dp)
