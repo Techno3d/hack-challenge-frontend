@@ -70,13 +70,16 @@ private fun ArticleViewContent(
                     modifier = Modifier.size(36.dp)
                 )
             }
+
             Text(text = "News Source", color = Color.White, fontSize = 20.sp)
+
+            //Remember to change color of bookmark button when applicable
             IconButton(onClick = {/* TODO: Search Functionality */ }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_searchbutton),
-                    contentDescription = "Search Button",
+                    painter = painterResource(id = R.drawable.ic_bookmark),
+                    contentDescription = "Save Button",
                     tint = Color.White,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(20.dp)
                 )
             }
         }
