@@ -61,7 +61,7 @@ fun NewsScreen(
                 Column {
                     Text(
                         "Scope",
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+                        modifier = Modifier.padding(vertical = 2.dp),
                         fontSize = 36.sp,
                         textAlign = TextAlign.Left,
                         fontStyle = FontStyle.Italic,
@@ -69,7 +69,7 @@ fun NewsScreen(
                     )
                     Text(
                         "Home",
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+                        modifier = Modifier.padding(vertical = 2.dp),
                         fontSize = 36.sp,
                         textAlign = TextAlign.Left,
                         color = Secondary
