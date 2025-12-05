@@ -12,11 +12,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontVariation.weight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 
 @Composable
 fun NewsCard(
@@ -26,25 +30,31 @@ fun NewsCard(
     author: String,
     newsSource: String,
     date: String,
-    onCardClick: () -> Unit = {}
+    onCardClick: () -> Unit = {},
+    modifier : Modifier = Modifier
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
+        modifier = modifier
             .background(Color.Black)
-            .padding(10.dp)
             .clickable { onCardClick() }
     ) {
         AsyncImage(
             model = thumbnailUrl,
             contentDescription = thumbnailDescription,
-            modifier = Modifier.width(300.dp).height(200.dp).padding(horizontal = 2.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(4f / 3f)
         )
-        Text(newsSource, fontSize = 15.sp, textAlign = TextAlign.Left, color = Color.White)
-        Text(title, fontSize = 20.sp, textAlign = TextAlign.Left, color = Color.White)
-        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(date, fontSize = 12.sp, color = Color.Gray)
-            Text(author, fontSize = 12.sp, color = Color.Gray)
+        Column(modifier = Modifier
+            .padding(12.dp)
+        ) {
+            Text(newsSource, fontSize = 15.sp, textAlign = TextAlign.Left, color = Color.White)
+            Text(title, fontSize = 20.sp, textAlign = TextAlign.Left, color = Color.White)
+            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(date, fontSize = 12.sp, color = Color.Gray)
+                Text(author, fontSize = 12.sp, color = Color.Gray)
+            }
         }
 
     }
