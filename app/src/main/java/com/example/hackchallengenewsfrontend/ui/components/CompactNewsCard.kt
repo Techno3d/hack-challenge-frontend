@@ -6,21 +6,27 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.example.hackchallengenewsfrontend.ui.theme.Articles
 
 @Composable
 fun CompactNewsCard(
@@ -30,27 +36,28 @@ fun CompactNewsCard(
     thumbnailUrl: String,
     thumbnailDescription: String,
     date: String,
-    onCardClick: () -> Unit
+    onCardClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ){
     Row(
-        modifier = Modifier.fillMaxWidth()
-            .background(Color.LightGray)
-            .border(width = 4.dp, color = Color.Black, shape = RectangleShape)
-            .padding(4.dp)
+        modifier = modifier.fillMaxWidth()
+            .background(Articles)
             .clickable { onCardClick() },
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         AsyncImage(
             model = thumbnailUrl,
             contentDescription = thumbnailDescription,
+            contentScale = ContentScale.Crop,
 //            placeholder = ,
             modifier = Modifier.width(115.dp)
                 .height(115.dp)
-                .padding(13.dp)
+                .clip(RoundedCornerShape(10.dp))
         )
+        Spacer(modifier = Modifier.width(13.dp))
         Column(modifier = Modifier.fillMaxWidth()
             .height(115.dp)
-            .padding(6.dp),
+            .padding(vertical = 12.dp),
             verticalArrangement = Arrangement.SpaceBetween){
             Text(text = newsSource, fontSize = 15.sp)
             Text(text = title, fontSize = 18.sp, maxLines = 3, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Left)
