@@ -19,6 +19,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +27,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hackchallengenewsfrontend.ui.screens.NewsScreen
@@ -56,31 +58,33 @@ fun BottomNavigationBar(navController : NavHostController){
     NavigationBar(
         containerColor = Color.Black
     ){
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
         // TODO: Add selected state, change selected icon color to only fill icon, not icon background
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
             label = { Text("Home") },
             colors = colors,
-            selected = true,
-            onClick = { /* TODO: Navigate to Home */ }
+            selected = currentRoute.equals("NewsScreen"),
+            onClick = { navController.navigate("NewsScreen") }
         )
 
         // TODO: Add real icon + selected state
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Phone, contentDescription = "Search") },
+            icon = { Icon(Icons.Filled.Phone, contentDescription = "Audio") },
             label = { Text("Audio") },
             colors = colors,
-            selected = false,
-            onClick = { /* TODO: Navigate to Audio */ }
+            selected = currentRoute.equals("audio"),
+            onClick = { navController.navigate("audio") }
         )
 
         //TODO: Add real icon + selected state
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Favorite, contentDescription = "Profile") },
+            icon = { Icon(Icons.Default.Favorite, contentDescription = "Saved") },
             label = { Text("Saved") },
             colors = colors,
-            selected = false,
-            onClick = { /* TODO: Navigate to Saved */ }
+            selected = currentRoute.equals("saved"),
+            onClick = { navController.navigate("saved") }
         )
     }
 }
@@ -104,6 +108,20 @@ fun SetupNavHost(navController : NavHostController){
             arguments = listOf(navArgument("url") {type = NavType.StringType})
         ) { backStackEntry ->
             Text("This is the article screen for: ${backStackEntry.arguments?.getString("url")}")
+        }
+        composable(
+            "audio",
+        ) {
+        }
+        composable(
+            "listen/{url}",
+            arguments = listOf(navArgument("url") {type = NavType.StringType})
+        ) { backStackEntry ->
+            Text("This is the article screen for: ${backStackEntry.arguments?.getString("url")}")
+        }
+        composable(
+            "saved",
+        ) {
         }
     }
 }
