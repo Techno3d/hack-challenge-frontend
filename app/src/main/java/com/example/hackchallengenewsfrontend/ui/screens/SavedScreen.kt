@@ -95,6 +95,7 @@ fun SavedScreen(
                 thumbnailDescription = article.thumbnailDescription ?: "",
                 onCardClick = {navToArticle(article.id)},
                 date = article.date?.toHumanReadable() ?: "Weee",
+                isFavorited = true
             )
             Spacer(modifier = Modifier.height(24.dp))
         }
