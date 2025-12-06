@@ -79,7 +79,8 @@ fun SavedScreen(){
                 thumbnailUrl = "TEMP URL",
                 thumbnailDescription = "TEMP DESC",
                 onCardClick = {},
-                date = "TEMP DATE"
+                date = "TEMP DATE",
+                isAudio = if(article == "art 1") true else false
             )
             Spacer(modifier = Modifier.height(24.dp))
         }
