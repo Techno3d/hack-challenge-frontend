@@ -1,5 +1,6 @@
 package com.example.hackchallengenewsfrontend.ui.screens
 
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
@@ -41,11 +43,12 @@ import com.example.hackchallengenewsfrontend.ui.components.NewsCard
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
+import com.example.hackchallengenewsfrontend.viewmodels.PlayerViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainListenScreen(
-    exoPlayer: ExoPlayer,
+    playerViewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>(),
     newsViewModel: NewsViewModel = hiltViewModel<NewsViewModel>()
 ) {
     val uiState by newsViewModel.uiStateFlow.collectAsStateWithLifecycle()
@@ -56,6 +59,8 @@ fun MainListenScreen(
         // article.audioUrl != null || article.hasAudio == true
         true // For now, showing all articles
     }
+
+    playerViewModel.loadAndPlayAudio(MediaItem.fromUri(Uri.encode("http://35.186.167.11:5000/audios/51.mp3")))
 
     LazyColumn(
         Modifier
