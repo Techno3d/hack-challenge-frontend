@@ -61,7 +61,8 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch {
             val loginState = articleRepository.loginInfo
             if(!loginState.value.isLoggedIn) {
-                articleRepository.login("johndoe", "1234")
+                //articleRepository.registerAccount(username = "janedoe", email = "jane.doe@example.com", password = "1234")
+                articleRepository.login(username = "janedoe", password = "1234")
             }
             articleRepository.getKNewestArticles(100)
                 .onSuccess { feed ->

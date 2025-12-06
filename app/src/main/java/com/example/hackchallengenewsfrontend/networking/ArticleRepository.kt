@@ -144,7 +144,7 @@ class ArticleRepository @Inject constructor(
     suspend fun login(username: String, password: String): Result<Unit> {
         val response = articleApiService.login(Auth(username, password))
         if(response.isSuccessful) {
-            _loginInfoFlow.value.copy(
+            _loginInfoFlow.value = _loginInfoFlow.value.copy(
                 isLoggedIn = true,
                 currentUserName = response.body()?.user?.username,
                 currentEmail = response.body()?.user?.email
@@ -156,7 +156,7 @@ class ArticleRepository @Inject constructor(
     suspend fun logout(): Result<Unit> {
         val response = articleApiService.logout()
         if(response.isSuccessful) {
-            _loginInfoFlow.value.copy(
+            _loginInfoFlow.value = _loginInfoFlow.value.copy(
                 isLoggedIn = false,
                 currentUserName = null,
                 currentEmail = null

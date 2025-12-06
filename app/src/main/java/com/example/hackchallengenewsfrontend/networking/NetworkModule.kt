@@ -1,5 +1,6 @@
 package com.example.hackchallengenewsfrontend.networking
 
+import android.app.Application
 import android.content.Context
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
@@ -18,6 +19,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -44,6 +46,9 @@ object NetworkModule {
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
+            .connectTimeout(1, TimeUnit.MINUTES) // Time to establish the connection
+            .readTimeout(1, TimeUnit.MINUTES)    // Time to wait for data to be read
+            .writeTimeout(1, TimeUnit.MINUTES)   // Time to wait for data to be written
             .build()
     }
 
