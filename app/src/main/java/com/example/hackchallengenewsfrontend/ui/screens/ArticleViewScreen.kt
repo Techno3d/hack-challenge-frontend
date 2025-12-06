@@ -133,7 +133,7 @@ private fun ArticleViewContent(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(text = uiState.articleText, color = Color.White, fontSize = 16.sp)
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(120.dp))
     }
 }
 
