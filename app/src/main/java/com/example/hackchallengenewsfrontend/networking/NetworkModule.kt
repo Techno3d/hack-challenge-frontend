@@ -35,7 +35,7 @@ object NetworkModule {
             coerceInputValues = true
         }
         return Retrofit.Builder()
-            .baseUrl("http://localhost:5000/")
+            .baseUrl("http://35.186.167.11:5000/")
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .client(okHttpClient)
             .build()
