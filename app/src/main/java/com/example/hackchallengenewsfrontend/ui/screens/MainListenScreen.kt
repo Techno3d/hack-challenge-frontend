@@ -41,6 +41,7 @@ import com.example.hackchallengenewsfrontend.ui.theme.Primary
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainListenScreen(
     onPlayAudio: (String) -> Unit,

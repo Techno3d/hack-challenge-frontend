@@ -46,6 +46,4 @@ object NetworkModule {
     fun provideApiService(retrofit: Retrofit): ArticleApiService {
         return retrofit.create(ArticleApiService::class.java)
     }
-
-    // TODO: Provide Retrofit, provide APIService, provide
 }
