@@ -124,11 +124,11 @@ fun CompactNewsCard(
                         Text(text = "\u2022   $date", color = Color.White)
                     }
                 }
-                IconButton(onClick = {/* TODO: Save Functionality */ }) {
+                IconButton(onClick = { onFavoriteClick() }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_bookmark),
                         contentDescription = "Save Button",
-                        tint = Color.White,
+                        tint = if(isFavorited) Color.White else Color.LightGray,
                         modifier = Modifier.size(20.dp)
                     )
                 }
