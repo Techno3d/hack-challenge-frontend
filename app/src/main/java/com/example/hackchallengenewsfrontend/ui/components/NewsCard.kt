@@ -84,7 +84,7 @@ fun NewsCard(
                     Text("$date $author", fontSize = 12.sp, color = Secondary)
                 } else {
                     Row(verticalAlignment = Alignment.CenterVertically){
-                        IconButton(onClick = {/* TODO: Play Functionality */ }) {
+                        IconButton(onClick = { onPlayButtonClicked() }) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_cardplaybutton),
                                 contentDescription = "Play Button",
@@ -111,7 +111,7 @@ fun NewsCard(
                         Text(text = " \u2022   time", color = Color.White)
                     }
                 }
-                IconButton(onClick = {/* TODO: Save Functionality */ }) {
+                IconButton(onClick = { onFavoriteClick() }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_bookmark),
                         contentDescription = "Save Button",
@@ -123,18 +123,4 @@ fun NewsCard(
         }
 
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NewsCardPreview() {
-    NewsCard(newsSource = "Cornell Chronicle",
-        title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
-        thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
-        author = "Hello",
-        thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
-        date = "19/2/22",
-        onCardClick = {},
-        isAudio = true,
-        isPlaying = false)
 }
