@@ -166,6 +166,7 @@ fun SetupNavHost(
                     ModalBottomSheet(
                         onDismissRequest = {
                             selectedArticleId = null
+                            playerViewModel.exoPlayer.stop()
                         },
                         sheetState = sheetState,
                         containerColor = Color.Black
