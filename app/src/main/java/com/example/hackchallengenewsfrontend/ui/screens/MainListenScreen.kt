@@ -1,5 +1,7 @@
 package com.example.hackchallengenewsfrontend.ui.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -13,11 +15,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,11 +39,22 @@ import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
 import com.example.hackchallengenewsfrontend.ui.components.NewsCard
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
+import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
 
 @Composable
 fun MainListenScreen(
-    viewArticle: (String) -> Unit
+    viewArticle: (String) -> Unit,
+    newsViewModel: NewsViewModel = hiltViewModel<NewsViewModel>()
 ) {
+    val uiState by newsViewModel.uiStateFlow.collectAsStateWithLifecycle()
+
+    // Filter articles that have audio
+    val audioArticles = uiState.feed.filter { article ->
+        // TODO: Replace with actual audio field check when backend provides it
+        // article.audioUrl != null || article.hasAudio == true
+        true // For now, showing all articles
+    }
+
     LazyColumn(
         Modifier
             .fillMaxSize()
@@ -102,43 +117,19 @@ fun MainListenScreen(
                     .horizontalScroll(state = rememberScrollState())
                     .fillMaxWidth()
             ) {
-                NewsCard(
-                    newsSource = "Cornell Chronicle",
-                    title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
-                    thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
-                    thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
-                    onCardClick = { viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago") },
-                    author = "Author",
-                    date = "Date",
-                    modifier = Modifier.width(300.dp)
-                )
-
-                Spacer(modifier = Modifier.width(20.dp))
-
-                NewsCard(
-                    newsSource = "Cornell Chronicle",
-                    title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
-                    thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
-                    thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
-                    onCardClick = { viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago") },
-                    author = "Author",
-                    date = "Date",
-                    modifier = Modifier.width(300.dp)
-                )
-
-                Spacer(modifier = Modifier.width(20.dp))
-
-                NewsCard(
-                    newsSource = "Cornell Chronicle",
-                    title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
-                    thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
-                    thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
-                    onCardClick = { viewArticle("https://www.pbs.org/newshour/nation/winter-storm-snarls-flights-for-post-thanksgiving-travelers-in-chicago") },
-                    author = "Author",
-                    date = "Date",
-                    modifier = Modifier.width(300.dp)
-                )
-
+                audioArticles.take(3).forEach { article ->
+                    NewsCard(
+                        newsSource = article.newsSource,
+                        title = article.title,
+                        thumbnailUrl = article.thumbnailUrl ?: "",
+                        thumbnailDescription = article.thumbnailDescription ?: "",
+                        onCardClick = { viewArticle(article.articleUrl) },
+                        author = article.author,
+                        date = article.date?.toHumanReadable() ?: "",
+                        modifier = Modifier.width(300.dp)
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -157,20 +148,23 @@ fun MainListenScreen(
             Spacer(modifier = Modifier.height(12.dp))
         }
 
-        item {
+        items(audioArticles.drop(3)) { article ->
             CompactNewsCard(
-                title = "TEMP TITLE",
-                newsSource = "TEMP SOURCE",
-                author = "TEMP AUTHOR",
-                thumbnailUrl = "TEMP URL",
-                thumbnailDescription = "TEMP DESC",
-                onCardClick = {},
-                date = "TEMP DATE"
+                title = article.title,
+                newsSource = article.newsSource,
+                author = article.author,
+                thumbnailUrl = article.thumbnailUrl ?: "",
+                thumbnailDescription = article.thumbnailDescription ?: "",
+                onCardClick = { viewArticle(article.articleUrl) },
+                date = article.date?.toHumanReadable() ?: "",
+                isAudio = true
             )
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun MainListenScreenPreview() {
