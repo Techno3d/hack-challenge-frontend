@@ -108,7 +108,7 @@ fun NewsCard(
                                 )
                             }
                         }
-                        Text(text = " \u2022   time", color = Color.White)
+                        Text(text = " \u2022   $date", color = Color.White)
                     }
                 }
                 IconButton(onClick = { onFavoriteClick() }) {
