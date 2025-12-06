@@ -127,7 +127,8 @@ fun MainListenScreen(
                         onCardClick = { onPlayAudio(article.articleUrl) },
                         author = article.author,
                         date = article.date?.toHumanReadable() ?: "",
-                        modifier = Modifier.width(300.dp)
+                        modifier = Modifier.width(300.dp),
+                        isFavorited = article.saved
                     )
                     Spacer(modifier = Modifier.width(20.dp))
                 }
@@ -158,7 +159,8 @@ fun MainListenScreen(
                 thumbnailDescription = article.thumbnailDescription ?: "",
                 onCardClick = { onPlayAudio(article.articleUrl) },
                 date = article.date?.toHumanReadable() ?: "",
-                isAudio = true
+                isAudio = true,
+                isFavorited = article.saved
             )
             Spacer(modifier = Modifier.height(24.dp))
         }

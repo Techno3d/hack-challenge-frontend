@@ -141,7 +141,8 @@ fun NewsScreen(
                                 newsSource = laterItems[j].newsSource,
                                 date = laterItems[j].date?.toHumanReadable() ?: laterItems[j].date.toString(),
                                 isCompact = true,
-                                onCardClick = { viewArticle(laterItems[j].id) }
+                                onCardClick = { viewArticle(laterItems[j].id) },
+                                isFavorited = laterItems[j].saved,
                             )
                         }
                     }
