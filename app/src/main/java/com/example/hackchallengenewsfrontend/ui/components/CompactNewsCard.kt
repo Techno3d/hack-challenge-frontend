@@ -117,7 +117,7 @@ fun CompactNewsCard(
                                     painter = painterResource(id = R.drawable.ic_playbutton),
                                     contentDescription = "Play Button",
                                     tint = Color.Black,
-                                    modifier = Modifier.size(14.dp)
+                                    modifier = Modifier.size(12.dp)
                                 )
                             }
                             else{
