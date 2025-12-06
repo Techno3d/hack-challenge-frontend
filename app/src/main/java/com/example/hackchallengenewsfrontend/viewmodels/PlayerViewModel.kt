@@ -28,12 +28,12 @@ class PlayerViewModel @Inject constructor(
         _playerState.value = exoPlayer
     }
 
-    fun loadAndPlayAudio(media: MediaItem) {
+    fun loadAudio(media: MediaItem) {
         viewModelScope.launch {
+            exoPlayer.stop()
             exoPlayer.apply {
                 setMediaItem(media)
                 prepare()
-                playWhenReady = true
             }
         }
     }

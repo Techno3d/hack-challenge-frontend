@@ -1,9 +1,11 @@
 package com.example.hackchallengenewsfrontend.viewmodels
 
+import android.media.browse.MediaBrowser
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
 import com.example.hackchallengenewsfrontend.networking.ArticleRepository
 import com.example.hackchallengenewsfrontend.ui.screens.toHumanReadable
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +41,8 @@ class ArticleViewModel @Inject constructor(
         val author: String = "",
         val newsSource: String = "",
         val date: String = "",
-        val saved: Boolean = false
+        val saved: Boolean = false,
+        val id: Int = 0
     )
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -55,9 +58,17 @@ class ArticleViewModel @Inject constructor(
                 author = article.author,
                 newsSource = article.newsSource,
                 date = article.date?.toHumanReadable() ?: "A New Era",
-                saved = article.saved
+                saved = article.saved,
+                id = article.id
             )
         }
+    }
+
+    suspend fun getAudio(): MediaItem? {
+        articleRepository.getAudio(_uiStateFlow.value.id).onSuccess {
+            return it
+        }
+        return null
     }
 }
 

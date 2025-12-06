@@ -50,7 +50,6 @@ import com.example.hackchallengenewsfrontend.viewmodels.PlayerViewModel
 @Composable
 fun MainListenScreen(
     onCardClick: (Int) -> Unit = {},
-    playerViewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>(),
     newsViewModel: NewsViewModel = hiltViewModel<NewsViewModel>()
 ) {
     val uiState by newsViewModel.uiStateFlow.collectAsStateWithLifecycle()
@@ -61,8 +60,6 @@ fun MainListenScreen(
         // article.audioUrl != null || article.hasAudio == true
         true // For now, showing all articles
     }
-
-    playerViewModel.loadAndPlayAudio(MediaItem.fromUri(("http://35.186.167.11:5000/audios/51.mp3")))
 
     LazyColumn(
         Modifier

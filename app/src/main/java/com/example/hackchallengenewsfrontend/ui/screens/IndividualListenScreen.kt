@@ -1,6 +1,8 @@
 package com.example.hackchallengenewsfrontend.screens
 
+import android.os.Build
 import android.service.autofill.Validators.and
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,15 +53,18 @@ import coil3.compose.AsyncImagePainter.State.Empty.painter
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.viewmodels.ArticleViewModel
 import com.example.hackchallengenewsfrontend.viewmodels.AudioViewModel
+import com.example.hackchallengenewsfrontend.viewmodels.PlayerViewModel
 import kotlin.times
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IndividualListenScreen(
     articleID: Int,
     exoPlayer: ExoPlayer,
     audioViewModel: AudioViewModel = hiltViewModel<AudioViewModel>(),
-    articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>()
+    articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>(),
+    playerViewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>(),
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -72,6 +77,9 @@ fun IndividualListenScreen(
     LaunchedEffect(articleID) {
         audioViewModel.loadAudio(articleID)
         articleViewModel.loadArticle(articleID)
+        val audio = articleViewModel.getAudio()
+        if(audio != null)
+            playerViewModel.loadAudio(audio)
     }
 
     // Helper function to format seconds to MM:SS
@@ -80,6 +88,7 @@ fun IndividualListenScreen(
         val secs = (seconds % 60).toInt()
         return "%d:%02d".format(mins, secs)
     }
+
 
     Column(
         modifier = Modifier
