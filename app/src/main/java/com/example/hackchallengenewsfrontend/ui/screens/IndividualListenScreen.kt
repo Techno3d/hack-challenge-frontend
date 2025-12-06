@@ -54,7 +54,7 @@ import kotlin.times
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IndividualListenScreen(
-    articleUrl: String,
+    articleID: Int,
     audioViewModel: AudioViewModel = hiltViewModel<AudioViewModel>(),
     articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>()
 ) {
@@ -66,9 +66,8 @@ fun IndividualListenScreen(
     // Collect article state
     val articleState by articleViewModel.uiStateFlow.collectAsStateWithLifecycle()
 
-    LaunchedEffect(articleUrl) {
-        audioViewModel.loadAudio(articleUrl)
-        // TODO: articleViewModel.loadArticle(articleUrl)
+    LaunchedEffect(articleID) {
+        audioViewModel.loadAudio(articleID)
     }
 
     // Helper function to format seconds to MM:SS

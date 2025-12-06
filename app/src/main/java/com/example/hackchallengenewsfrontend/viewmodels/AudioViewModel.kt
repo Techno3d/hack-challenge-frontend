@@ -2,14 +2,17 @@ package com.example.hackchallengenewsfrontend.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.MediaItem
+import com.example.hackchallengenewsfrontend.networking.ArticleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
 import javax.inject.Inject
 
 @HiltViewModel
-class AudioViewModel @Inject constructor() : ViewModel() {
+class AudioViewModel @Inject constructor(private val articleRepository: ArticleRepository) : ViewModel() {
     private val _uiStateFlow = MutableStateFlow(AudioUIState())
     val uiStateFlow = _uiStateFlow.asStateFlow()
 
@@ -18,16 +21,21 @@ class AudioViewModel @Inject constructor() : ViewModel() {
         val duration: Float = 225f, // Default 3:45 in seconds
         val volume: Float = 1f,
         val isPlaying: Boolean = false,
-        val currentAudioUrl: String? = null
+        val currentAudio: MediaItem? = null
     )
 
-    fun loadAudio(url: String) {
+    fun loadAudio(articleID: Int) {
         viewModelScope.launch {
-            _uiStateFlow.value = _uiStateFlow.value.copy(
-                currentAudioUrl = url,
-                currentPosition = 0f
-            )
-            // TODO: Fetch actual audio duration from MediaPlayer
+            val response = articleRepository.getAudio(articleID)
+            response.onSuccess { audio ->
+                _uiStateFlow.value = _uiStateFlow.value.copy(
+                    currentAudio = audio
+                )
+            }.onFailure {
+                _uiStateFlow.value = _uiStateFlow.value.copy(
+                    currentAudio = null
+                )
+            }
         }
     }
 
