@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -70,6 +71,7 @@ fun IndividualListenScreen(
 
     LaunchedEffect(articleID) {
         audioViewModel.loadAudio(articleID)
+        articleViewModel.loadArticle(articleID)
     }
 
     // Helper function to format seconds to MM:SS
@@ -82,6 +84,7 @@ fun IndividualListenScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .fillMaxHeight(0.9f)
             .background(Color.Black)
             .padding(24.dp)
             .navigationBarsPadding(),
@@ -100,7 +103,6 @@ fun IndividualListenScreen(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFFCCCCCC), shape = RoundedCornerShape(8.dp))
                     .clip(RoundedCornerShape(8.dp))
             )
         }

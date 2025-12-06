@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MimeTypes.isAudio
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
@@ -48,6 +49,7 @@ import com.example.hackchallengenewsfrontend.viewmodels.PlayerViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainListenScreen(
+    onCardClick: (Int) -> Unit = {},
     playerViewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>(),
     newsViewModel: NewsViewModel = hiltViewModel<NewsViewModel>()
 ) {
@@ -130,7 +132,7 @@ fun MainListenScreen(
                         title = article.title,
                         thumbnailUrl = article.thumbnailUrl ?: "",
                         thumbnailDescription = article.thumbnailDescription ?: "",
-                        onCardClick = { /* TODO: Do this on click */ },
+                        onCardClick = { onCardClick(article.id) },
                         author = article.author,
                         date = article.date?.toHumanReadable() ?: "",
                         modifier = Modifier.width(300.dp),
@@ -164,7 +166,7 @@ fun MainListenScreen(
                 author = article.author,
                 thumbnailUrl = article.thumbnailUrl ?: "",
                 thumbnailDescription = article.thumbnailDescription ?: "",
-                onCardClick = { /* TODO: Add the on click */},
+                onCardClick = {onCardClick(article.id)},
                 date = article.date?.toHumanReadable() ?: "",
                 isAudio = true,
                 isFavorited = article.saved,
