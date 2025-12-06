@@ -86,11 +86,11 @@ private fun ArticleViewContent(
             Text(text = uiState.newsSource, color = Color.White, fontSize = 20.sp)
 
             //Remember to change color of bookmark button when applicable
-            IconButton(onClick = {}) {
+            IconButton(onClick = {/* TODO: Save Functionality */ }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_bookmark),
                     contentDescription = "Save Button",
-                    tint = Color.White,
+                    tint = if(uiState.saved) Color.White else Color.LightGray,
                     modifier = Modifier.size(20.dp)
                 )
             }

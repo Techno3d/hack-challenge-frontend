@@ -130,7 +130,7 @@ fun IndividualListenScreen(
                 Icon(
                     painter = painterResource(R.drawable.ic_bookmark),
                     contentDescription = "Save",
-                    tint = Color.White,
+                    tint = if(articleState.saved) Color.White else Color.LightGray,
                     modifier = Modifier.padding(12.dp)
                 )
             }
