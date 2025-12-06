@@ -54,6 +54,14 @@ fun ArticleViewScreen(
     LaunchedEffect(Unit) {
         articleViewModel.loadArticle(articleId)
     }
+    fun getLogoForSource(sourceName: String): Int {
+        return when {
+            sourceName.contains("Cornell Daily Sun") -> R.drawable.cornell_daily_sun_logo
+            sourceName.contains("Cornell Chronicle") -> R.drawable.cornell_chronicle_logo
+            sourceName.contains("The Ithaca Voice") -> R.drawable.ithaca_voice_logo
+            else -> R.drawable.ic_launcher_foreground
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -109,7 +117,7 @@ fun ArticleViewScreen(
 
         //Placeholder image for viewing purposes
         AsyncImage(
-            model = uiState.mainImage,
+            model = uiState.mainImage.ifEmpty { getLogoForSource(uiState.newsSource) },
             contentDescription = uiState.mainImageDescription,
             modifier = Modifier
                 .fillMaxWidth()
