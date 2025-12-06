@@ -99,6 +99,9 @@ fun SavedScreen(
             )
             Spacer(modifier = Modifier.height(24.dp))
         }
+        item{
+            Spacer(modifier = Modifier.height(120.dp))
+        }
     }
 }
 

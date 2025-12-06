@@ -50,7 +50,6 @@ class NewsViewModel @Inject constructor(
             val loginState = articleRepository.loginInfo
             if(!loginState.value.isLoggedIn) {
                 articleRepository.login("johndoe", "1234")
-                articleRepository.favoriteArticle(854)
             }
             articleRepository.getKNewestArticles(100)
                 .onSuccess { feed ->
