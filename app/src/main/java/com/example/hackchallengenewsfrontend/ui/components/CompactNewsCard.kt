@@ -129,7 +129,7 @@ fun CompactNewsCard(
                                 )
                             }
                         }
-                        Text(text = "\u2022   $date", color = Color.White)
+                        Text(text = "\u2022   $date", color = Color.White, fontSize = 12.sp)
                     }
                 }
                 IconButton(onClick = { onFavoriteClick() }) {
