@@ -122,7 +122,8 @@ fun NewsScreen(
                     author = firstNewsCard.author,
                     newsSource = firstNewsCard.newsSource,
                     date = firstNewsCard.date?.toHumanReadable() ?: firstNewsCard.date.toString(),
-                    onCardClick = { viewArticle(firstNewsCard.id) }
+                    onCardClick = { viewArticle(firstNewsCard.id) },
+                    isFavorited = firstNewsCard.saved,
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
