@@ -11,4 +11,7 @@ data class News (
     val thumbnailUrl: String?,
     val thumbnailDescription: String?,
     val date: LocalDateTime?,
+    val id: Int,
+    val text: String,
+    val audioFileName: String? = null,
 )

@@ -78,4 +78,19 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
     implementation("io.coil-kt.coil3:coil-compose:3.3.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
+    val exoplayerVersion = "1.4.1"
+    // Core ExoPlayer library
+    implementation("androidx.media3:media3-exoplayer:$exoplayerVersion")
+    // Common utilities (recommended)
+    implementation("androidx.media3:media3-common:$exoplayerVersion")
+    // UI components
+    implementation("androidx.media3:media3-ui:$exoplayerVersion")
+    // DASH support
+    implementation("androidx.media3:media3-exoplayer-dash:$exoplayerVersion")
+    // HLS support
+    implementation("androidx.media3:media3-exoplayer-hls:$exoplayerVersion")
+    // SmoothStreaming support
+    implementation("androidx.media3:media3-exoplayer-smoothstreaming:$exoplayerVersion")
+    // Optional: Extractor (for progressive formats like MP4, MP3)
+    implementation("androidx.media3:media3-exoplayer-rtsp:$exoplayerVersion")
 }

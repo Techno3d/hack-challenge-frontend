@@ -37,7 +37,7 @@ class NewsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            articleRepository.getAllArticles()
+            articleRepository.getKNewestArticles(100)
                 .onSuccess { feed ->
                     _uiStateFlow.value = _uiStateFlow.value.copy(
                         feed = feed
@@ -45,14 +45,16 @@ class NewsViewModel @Inject constructor(
                 }.onFailure {
                     _uiStateFlow.value = _uiStateFlow.value.copy(
                         feed = listOf(News(
-                            title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
+                            title = "Error occured in the app",
                             thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
-                            author = "Hello",
+                            author = "Shadman, Ryan, Boris, Colin, Ethan",
                             thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
-                            newsSource = "Me",
+                            newsSource = "This App",
                             articleUrl = "no",
                             tags = emptyList(),
                             date = LocalDateTime.parse("2024-11-26T17:11:56"),
+                            id = -1,
+                            text = "Report the error if you can trust (no one will see this)"
                         ))
                     )
                 }
