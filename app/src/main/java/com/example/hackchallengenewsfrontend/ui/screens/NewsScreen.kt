@@ -101,12 +101,13 @@ fun NewsScreen(
 //                filters = listOf("Rock", "Hello", "CU Nooz"),
 //                currentFiltersSelected = listOf("CU Nooz")
 //            ) { }
-            Spacer(Modifier.height(24.dp))
+//          Spacer(Modifier.height(24.dp))
             Text(
                 "Top Stories",
                 modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
-                fontSize = 20.sp,
+                fontSize = 36.sp,
                 textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Spacer(Modifier.height(12.dp))
@@ -151,7 +152,14 @@ fun NewsScreen(
                 }
             }
             Spacer(modifier = Modifier.height(24.dp))
-            Text("Popular Stories", fontSize = 25.sp)
+            Text(
+                "Popular Reads",
+                modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
+                fontSize = 28.sp,
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White
+            )
         }
         if (uiState.feed.size < popularItemsList+1) return@LazyColumn
         val popularItems = uiState.feed.slice((popularItemsList+1)..(uiState.feed.size - 1))
@@ -167,6 +175,10 @@ fun NewsScreen(
                 onFavoriteClick = {newsViewModel.toggleFavorite(article.id, article.saved)},
                 isFavorited = article.saved,
             )
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }

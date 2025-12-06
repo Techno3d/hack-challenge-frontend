@@ -108,8 +108,9 @@ fun MainListenScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 2.dp),
-                fontSize = 20.sp,
+                fontSize = 36.sp,
                 textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
                 color = Color.White
             )
             Spacer(Modifier.height(12.dp))
@@ -150,8 +151,9 @@ fun MainListenScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 2.dp),
-                fontSize = 20.sp,
+                fontSize = 28.sp,
                 textAlign = TextAlign.Left,
+                fontWeight = FontWeight.SemiBold,
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -171,6 +173,9 @@ fun MainListenScreen(
                 onFavoriteClick = {newsViewModel.toggleFavorite(article.id, article.saved)},
             )
             Spacer(modifier = Modifier.height(24.dp))
+        }
+        item {
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }

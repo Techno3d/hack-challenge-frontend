@@ -75,7 +75,7 @@ fun ArticleViewScreen(
                 )
             }
 
-            Text(text = uiState.newsSource, color = Color.White, fontSize = 20.sp)
+            Text(text = uiState.newsSource, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
 
             //Remember to change color of bookmark button when applicable
             IconButton(onClick = { articleViewModel.toggleFavorite(articleId, uiState.saved) }) {
@@ -83,7 +83,7 @@ fun ArticleViewScreen(
                     painter = painterResource(id = R.drawable.ic_bookmark),
                     contentDescription = "Save Button",
                     tint = if (uiState.saved) Color.White else Color.LightGray,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(22.dp)
                 )
             }
         }

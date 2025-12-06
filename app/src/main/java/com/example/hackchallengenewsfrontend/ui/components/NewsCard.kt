@@ -116,7 +116,7 @@ fun NewsCard(
                         painter = painterResource(id = R.drawable.ic_bookmark),
                         contentDescription = "Save Button",
                         tint = if(isFavorited) Color.White else Color.LightGray,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(if(isCompact) 18.dp else 24.dp)
                     )
                 }
             }

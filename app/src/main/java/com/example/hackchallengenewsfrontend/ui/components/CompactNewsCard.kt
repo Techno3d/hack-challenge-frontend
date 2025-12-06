@@ -137,7 +137,7 @@ fun CompactNewsCard(
                         painter = painterResource(id = R.drawable.ic_bookmark),
                         contentDescription = "Save Button",
                         tint = if(isFavorited) Color.White else Color.LightGray,
-                        modifier = Modifier.size(20.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                 }
             }
