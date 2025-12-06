@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,9 +16,16 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.theme.Articles
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
@@ -33,6 +41,7 @@ fun NewsCard(
     modifier : Modifier = Modifier,
     isCompact: Boolean = false,
     isAudio: Boolean = false,
+    isPlaying: Boolean = false,
     onCardClick: () -> Unit = {},
     onPlayButtonClicked: () -> Unit = {}
 ) {
@@ -58,10 +67,48 @@ fun NewsCard(
         ) {
             Text(newsSource, fontSize = if(isCompact) 10.sp else 14.sp, textAlign = TextAlign.Left, color = Primary)
             Text(title, fontSize = if(isCompact) 14.sp else 18.sp, textAlign = TextAlign.Left, color = Primary, lineHeight = if(isCompact) 16.sp else 20.sp)
-            if(!isAudio) {
-                Text("$date $author", fontSize = 12.sp, color = Secondary)
-            } else {
-                // TODO: Play Widget
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween){
+                if(!isAudio) {
+                    Text("$date $author", fontSize = 12.sp, color = Secondary)
+                } else {
+                    Row(verticalAlignment = Alignment.CenterVertically){
+                        IconButton(onClick = {/* TODO: Play Functionality */ }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_cardplaybutton),
+                                contentDescription = "Play Button",
+                                tint = Color.White,
+                                modifier = Modifier.size(32.dp)
+                            )
+                            if(!isPlaying) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_playbutton),
+                                    contentDescription = "Play Button",
+                                    tint = Color.Black,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                            else{
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_pausebutton),
+                                    contentDescription = "Pause Button",
+                                    tint = Color.Black,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                            }
+                        }
+                        Text(text = " \u2022   time", color = Color.White)
+                    }
+                }
+                IconButton(onClick = {/* TODO: Save Functionality */ }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_bookmark),
+                        contentDescription = "Save Button",
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
         }
 
@@ -77,5 +124,7 @@ fun NewsCardPreview() {
         author = "Hello",
         thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
         date = "19/2/22",
-        onCardClick = {})
+        onCardClick = {},
+        isAudio = true,
+        isPlaying = false)
 }

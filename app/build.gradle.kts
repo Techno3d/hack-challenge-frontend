@@ -44,10 +44,13 @@ android {
     buildFeatures {
         compose = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.6.8"
+    }
 }
 
 dependencies {
-    implementation("androidx.compose.material:material-icons-core:1.6.8")
+    implementation("androidx.compose.material:material-icons-core")
     implementation(libs.androidx.material3)
     val nav_version = "2.9.6"
     implementation("androidx.navigation:navigation-compose:$nav_version")

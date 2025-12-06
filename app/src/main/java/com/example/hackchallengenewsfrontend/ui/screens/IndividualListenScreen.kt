@@ -104,13 +104,15 @@ fun IndividualListenScreen() {
             }
 
             // Bookmark icon (top right)
-            Icon(
-                painter = painterResource(R.drawable.ic_bookmark),
-                contentDescription = "Save",
-                tint = Color.White,
-                modifier = Modifier
-                    .padding(12.dp)
-            )
+            IconButton(onClick = {/* TODO: Save Functionality */ }) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_bookmark),
+                    contentDescription = "Save",
+                    tint = Color.White,
+                    modifier = Modifier
+                        .padding(12.dp)
+                )
+            }
         }
 
         // --- 3. Playback Slider / Progress Bar ---
@@ -142,7 +144,11 @@ fun IndividualListenScreen() {
                     fontSize = 12.sp
                 )
                 // Total Time
-                Text(text = "video length end", color = Color.White.copy(alpha = 0.7f), fontSize = 12.sp)
+                Text(
+                    text = "video length end",
+                    color = Color.White.copy(alpha = 0.7f),
+                    fontSize = 12.sp
+                )
             }
         }
 
