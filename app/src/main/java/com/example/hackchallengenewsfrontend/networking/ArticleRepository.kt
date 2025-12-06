@@ -173,6 +173,9 @@ class ArticleRepository @Inject constructor(
         val response = articleApiService.getArticleByID(articleID)
         if(!response.isSuccessful) return Result.failure(Throwable(response.errorBody().toString()))
         val audioFileName = response.body()?.audioFile
+        if(audioFileName == null) {
+            articleApiService.generateAudio(articleID)
+        }
         return Result.success(MediaItem.fromUri("http://35.186.167.11:5000/audios/$audioFileName".toUri()))
     }
 }

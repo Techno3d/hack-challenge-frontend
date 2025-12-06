@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -32,6 +33,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hackchallengenewsfrontend.R
+import com.example.hackchallengenewsfrontend.screens.SavedScreen
+import com.example.hackchallengenewsfrontend.ui.screens.MainListenScreen
 import com.example.hackchallengenewsfrontend.ui.screens.NewsScreen
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -114,10 +117,12 @@ fun SetupNavHost(navController : NavHostController){
         composable(
             "audio",
         ) {
+            MainListenScreen({ })
         }
         composable(
             "saved",
         ) {
+            SavedScreen()
         }
     }
 }
