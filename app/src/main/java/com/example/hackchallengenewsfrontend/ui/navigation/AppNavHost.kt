@@ -34,8 +34,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.screens.SavedScreen
+import com.example.hackchallengenewsfrontend.ui.screens.ArticleViewScreen
 import com.example.hackchallengenewsfrontend.ui.screens.MainListenScreen
 import com.example.hackchallengenewsfrontend.ui.screens.NewsScreen
+import com.example.hackchallengenewsfrontend.viewmodels.ArticleViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -103,16 +105,17 @@ fun SetupNavHost(navController : NavHostController){
         startDestination = "NewsScreen"
     ) {
         composable("NewsScreen") {
-            NewsScreen(viewArticle = { url ->
-                val encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                navController.navigate("article/$encodedUrl")
+            NewsScreen(viewArticle = { id ->
+                navController.navigate("article/$id")
             })
         }
         composable(
-            "article/{url}",
-            arguments = listOf(navArgument("url") {type = NavType.StringType})
+            "article/{id}",
+            arguments = listOf(navArgument("id") {type = NavType.IntType})
         ) { backStackEntry ->
-            Text("This is the article screen for: ${backStackEntry.arguments?.getString("url")}")
+            ArticleViewScreen(backStackEntry.arguments?.getInt("id")?:0) {
+                navController.navigate("NewsScreen")
+            }
         }
         composable(
             "audio",

@@ -91,7 +91,7 @@ fun CompactNewsCard(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 if(!isAudio) {
-                    Text(text = "$date $author", fontSize = 12.sp, color = Secondary)
+                    Text(text = "$date  \u2022  $author", fontSize = 12.sp, color = Secondary)
                 }
                 else{
                     Row(verticalAlignment = Alignment.CenterVertically){
@@ -119,7 +119,7 @@ fun CompactNewsCard(
                                 )
                             }
                         }
-                        Text(text = "\u2022   time", color = Color.White)
+                        Text(text = "\u2022   $date", color = Color.White)
                     }
                 }
                 IconButton(onClick = {/* TODO: Save Functionality */ }) {

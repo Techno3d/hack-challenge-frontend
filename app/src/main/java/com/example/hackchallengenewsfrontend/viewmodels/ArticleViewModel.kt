@@ -1,7 +1,10 @@
 package com.example.hackchallengenewsfrontend.viewmodels
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.example.hackchallengenewsfrontend.networking.ArticleRepository
+import com.example.hackchallengenewsfrontend.ui.screens.toHumanReadable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +28,22 @@ class ArticleViewModel @Inject constructor(
         val date: String = ""
     )
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun loadArticle(articleID: Int) {
+        val currentArticle = articleRepository.getArticleByID(articleID)
+        currentArticle.onSuccess { article ->
+            _uiStateFlow.value = _uiStateFlow.value.copy(
+                title = article.title,
+                articleDescription = "",
+                articleText = article.text,
+                mainImage = article.thumbnailUrl ?: "",
+                mainImageDescription = article.thumbnailDescription,
+                author = article.author,
+                newsSource = article.newsSource,
+                date = article.date?.toHumanReadable() ?: "A New Era"
+            )
+        }
+    }
 }
 
 

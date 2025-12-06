@@ -2,6 +2,8 @@ package com.example.hackchallengenewsfrontend.ui.screens
 
 import android.R.attr.contentDescription
 import android.R.attr.text
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,21 +37,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter.State.Empty.painter
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.viewmodels.ArticleViewModel
+import kotlinx.coroutines.coroutineScope
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ArticleViewScreen(
-    articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>()
+    articleId: Int,
+    articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>(),
+    navHome: () -> Unit
 ) {
     val uiState by articleViewModel.uiStateFlow.collectAsStateWithLifecycle()
-    ArticleViewContent(uiState = uiState)
+    LaunchedEffect(Unit) {
+        articleViewModel.loadArticle(articleId)
+    }
+    ArticleViewContent(uiState = uiState, navHome)
 }
 
 @Composable
 private fun ArticleViewContent(
-    uiState: ArticleViewModel.ArticleUIState
+    uiState: ArticleViewModel.ArticleUIState,
+    navHome: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -62,7 +74,7 @@ private fun ArticleViewContent(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = {/* TODO: Navigate back to home */ }) {
+            IconButton(onClick = navHome) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                     contentDescription = "Back Button",
@@ -71,10 +83,10 @@ private fun ArticleViewContent(
                 )
             }
 
-            Text(text = "News Source", color = Color.White, fontSize = 20.sp)
+            Text(text = uiState.newsSource, color = Color.White, fontSize = 20.sp)
 
             //Remember to change color of bookmark button when applicable
-            IconButton(onClick = {/* TODO: Save Functionality */ }) {
+            IconButton(onClick = {}) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_bookmark),
                     contentDescription = "Save Button",
@@ -87,47 +99,41 @@ private fun ArticleViewContent(
         Spacer(modifier = Modifier.height(36.dp))
 
         Text(
-            text = "Title",
+            text = uiState.title,
             color = Color.White,
             fontSize = 20.sp,
             fontWeight = FontWeight.SemiBold
         )
 
+//        Spacer(modifier = Modifier.height(12.dp))
+//
+//        Text(text = "Article Description", color = Color.White, fontSize = 14.sp)
+
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text(text = "Article Description", color = Color.White, fontSize = 14.sp)
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text(text = "Date", color = Color.LightGray, fontSize = 14.sp)
+        Text(text = uiState.date, color = Color.LightGray, fontSize = 14.sp)
 
         Spacer(modifier = Modifier.height(12.dp))
 
         //Placeholder image for viewing purposes
-        Box(
+        AsyncImage(
+            model = uiState.mainImage,
+            contentDescription = uiState.mainImageDescription,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
                 .padding(bottom = 16.dp)
-        ) {
-            // Placeholder for the main image
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = Color.White, shape = RoundedCornerShape(8.dp))
-            )
-        }
-        Text(text = "INSERT IMAGE", color = Color.White)
-
-        Text(text = "Image Description", color = Color.LightGray, fontSize = 12.sp)
+        )
+        Text(text = uiState.mainImageDescription ?: "", color = Color.LightGray, fontSize = 12.sp)
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(text = "By Author", color = Color.White, fontSize = 14.sp)
+        Text(text = "By ${uiState.author}", color = Color.White, fontSize = 14.sp)
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(text = "Article", color = Color.White, fontSize = 16.sp)
+        Text(text = uiState.articleText, color = Color.White, fontSize = 16.sp)
+        Spacer(modifier = Modifier.height(100.dp))
     }
 }
 
@@ -136,7 +142,7 @@ private fun ArticleViewContent(
 fun ArticleViewScreenPreview() {
     ArticleViewContent(
         uiState = ArticleViewModel.ArticleUIState()
-    )
+    ) {}
 }
 
 @Preview(showBackground = true)

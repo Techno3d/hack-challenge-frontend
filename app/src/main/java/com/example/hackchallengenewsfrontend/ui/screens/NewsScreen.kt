@@ -50,7 +50,7 @@ import kotlin.math.abs
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewsScreen(
-    viewArticle: (String) -> Unit,
+    viewArticle: (Int) -> Unit,
     newsViewModel: NewsViewModel = hiltViewModel<NewsViewModel>()
 ) {
     val popularItemsList = 2
@@ -122,7 +122,7 @@ fun NewsScreen(
                     author = firstNewsCard.author,
                     newsSource = firstNewsCard.newsSource,
                     date = firstNewsCard.date?.toHumanReadable() ?: firstNewsCard.date.toString(),
-                    onCardClick = { viewArticle(firstNewsCard.articleUrl) }
+                    onCardClick = { viewArticle(firstNewsCard.id) }
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
@@ -140,7 +140,7 @@ fun NewsScreen(
                                 newsSource = laterItems[j].newsSource,
                                 date = laterItems[j].date?.toHumanReadable() ?: laterItems[j].date.toString(),
                                 isCompact = true,
-                                onCardClick = { viewArticle(laterItems[j].articleUrl) }
+                                onCardClick = { viewArticle(laterItems[j].id) }
                             )
                         }
                     }
@@ -159,7 +159,7 @@ fun NewsScreen(
                 author = article.author,
                 thumbnailUrl = article.thumbnailUrl ?: "",
                 thumbnailDescription = article.thumbnailDescription ?: "",
-                onCardClick = { viewArticle(article.articleUrl) }
+                onCardClick = { viewArticle(article.id) }
             )
         }
     }
