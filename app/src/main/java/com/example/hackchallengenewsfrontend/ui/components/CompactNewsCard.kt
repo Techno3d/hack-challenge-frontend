@@ -52,6 +52,14 @@ fun CompactNewsCard(
     isPlaying: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
+    fun getLogoForSource(sourceName: String): Int {
+        return when {
+            sourceName.contains("Cornell Daily Sun") -> R.drawable.cornell_daily_sun_logo
+            sourceName.contains("Cornell Chronicle") -> R.drawable.cornell_chronicle_logo
+            sourceName.contains("The Ithaca Voice") -> R.drawable.ithaca_voice_logo
+            else -> R.drawable.ic_launcher_foreground
+        }
+    }
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -61,7 +69,7 @@ fun CompactNewsCard(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         AsyncImage(
-            model = thumbnailUrl,
+            model = thumbnailUrl.ifEmpty { getLogoForSource(newsSource)},
             contentDescription = thumbnailDescription,
             contentScale = ContentScale.Crop,
 //            placeholder = ,
@@ -109,7 +117,7 @@ fun CompactNewsCard(
                                     painter = painterResource(id = R.drawable.ic_playbutton),
                                     contentDescription = "Play Button",
                                     tint = Color.Black,
-                                    modifier = Modifier.size(14.dp)
+                                    modifier = Modifier.size(12.dp)
                                 )
                             }
                             else{

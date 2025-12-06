@@ -39,12 +39,22 @@ fun NewsCard(
     newsSource: String,
     date: String,
     modifier : Modifier = Modifier,
+    onFavoriteClick: () -> Unit = {},
+    isFavorited: Boolean = false,
     isCompact: Boolean = false,
     isAudio: Boolean = false,
     isPlaying: Boolean = false,
     onCardClick: () -> Unit = {},
     onPlayButtonClicked: () -> Unit = {}
 ) {
+    fun getLogoForSource(sourceName: String): Int {
+        return when {
+            sourceName.contains("Cornell Daily Sun") -> R.drawable.cornell_daily_sun_logo
+            sourceName.contains("Cornell Chronicle") -> R.drawable.cornell_chronicle_logo
+            sourceName.contains("The Ithaca Voice") -> R.drawable.ithaca_voice_logo
+            else -> R.drawable.ic_launcher_foreground
+        }
+    }
     Column(
         verticalArrangement = Arrangement.spacedBy(if(isCompact) 4.dp else 8.dp),
         modifier = modifier
@@ -53,7 +63,7 @@ fun NewsCard(
             .clickable { onCardClick() }
     ) {
         AsyncImage(
-            model = thumbnailUrl,
+            model = thumbnailUrl.ifEmpty { getLogoForSource(newsSource)},
             contentDescription = thumbnailDescription,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -105,7 +115,7 @@ fun NewsCard(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_bookmark),
                         contentDescription = "Save Button",
-                        tint = Color.White,
+                        tint = if(isFavorited) Color.White else Color.LightGray,
                         modifier = Modifier.size(24.dp)
                     )
                 }

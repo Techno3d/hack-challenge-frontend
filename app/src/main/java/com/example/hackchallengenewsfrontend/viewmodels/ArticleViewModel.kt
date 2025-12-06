@@ -25,7 +25,8 @@ class ArticleViewModel @Inject constructor(
         val mainImageDescription: String? = null,
         val author: String = "",
         val newsSource: String = "",
-        val date: String = ""
+        val date: String = "",
+        val saved: Boolean = false
     )
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -40,7 +41,8 @@ class ArticleViewModel @Inject constructor(
                 mainImageDescription = article.thumbnailDescription,
                 author = article.author,
                 newsSource = article.newsSource,
-                date = article.date?.toHumanReadable() ?: "A New Era"
+                date = article.date?.toHumanReadable() ?: "A New Era",
+                saved = article.saved
             )
         }
     }
