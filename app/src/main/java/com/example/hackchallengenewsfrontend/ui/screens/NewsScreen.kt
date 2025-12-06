@@ -124,6 +124,7 @@ fun NewsScreen(
                     date = firstNewsCard.date?.toHumanReadable() ?: firstNewsCard.date.toString(),
                     onCardClick = { viewArticle(firstNewsCard.id) },
                     isFavorited = firstNewsCard.saved,
+                    onFavoriteClick = {newsViewModel.toggleFavorite(firstNewsCard.id, firstNewsCard.saved)},
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
@@ -143,6 +144,7 @@ fun NewsScreen(
                                 isCompact = true,
                                 onCardClick = { viewArticle(laterItems[j].id) },
                                 isFavorited = laterItems[j].saved,
+                                onFavoriteClick = {newsViewModel.toggleFavorite(laterItems[j].id, laterItems[j].saved)},
                             )
                         }
                     }

@@ -127,7 +127,7 @@ fun IndividualListenScreen(
                 )
             }
 
-            IconButton(onClick = { /* TODO: Save */ }) {
+            IconButton(onClick = { articleViewModel.toggleFavorite(articleID, articleState.saved) }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_bookmark),
                     contentDescription = "Save",
