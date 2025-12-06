@@ -128,7 +128,8 @@ fun MainListenScreen(
                         author = article.author,
                         date = article.date?.toHumanReadable() ?: "",
                         modifier = Modifier.width(300.dp),
-                        isFavorited = article.saved
+                        isFavorited = article.saved,
+                        onFavoriteClick = {newsViewModel.toggleFavorite(article.id, article.saved)},
                     )
                     Spacer(modifier = Modifier.width(20.dp))
                 }
@@ -160,7 +161,8 @@ fun MainListenScreen(
                 onCardClick = { onPlayAudio(article.articleUrl) },
                 date = article.date?.toHumanReadable() ?: "",
                 isAudio = true,
-                isFavorited = article.saved
+                isFavorited = article.saved,
+                onFavoriteClick = {newsViewModel.toggleFavorite(article.id, article.saved)},
             )
             Spacer(modifier = Modifier.height(24.dp))
         }

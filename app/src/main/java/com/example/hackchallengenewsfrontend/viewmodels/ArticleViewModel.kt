@@ -3,11 +3,13 @@ package com.example.hackchallengenewsfrontend.viewmodels
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.hackchallengenewsfrontend.networking.ArticleRepository
 import com.example.hackchallengenewsfrontend.ui.screens.toHumanReadable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,6 +18,17 @@ class ArticleViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiStateFlow = MutableStateFlow(ArticleUIState())
     val uiStateFlow = _uiStateFlow.asStateFlow()
+
+    fun toggleFavorite(articleId: Int, isFavorited: Boolean) {
+        viewModelScope.launch{
+            if(isFavorited){
+                articleRepository.unFavoriteArticle(articleId)
+            }
+            else{
+                articleRepository.favoriteArticle(articleId)
+            }
+        }
+    }
 
     data class ArticleUIState(
         val title: String = "",
