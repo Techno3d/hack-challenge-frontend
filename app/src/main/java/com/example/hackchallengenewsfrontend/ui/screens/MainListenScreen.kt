@@ -43,7 +43,7 @@ import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
 
 @Composable
 fun MainListenScreen(
-    viewArticle: (String) -> Unit,
+    onPlayAudio: (String) -> Unit,
     newsViewModel: NewsViewModel = hiltViewModel<NewsViewModel>()
 ) {
     val uiState by newsViewModel.uiStateFlow.collectAsStateWithLifecycle()
@@ -123,7 +123,7 @@ fun MainListenScreen(
                         title = article.title,
                         thumbnailUrl = article.thumbnailUrl ?: "",
                         thumbnailDescription = article.thumbnailDescription ?: "",
-                        onCardClick = { viewArticle(article.articleUrl) },
+                        onCardClick = { onPlayAudio(article.articleUrl) },
                         author = article.author,
                         date = article.date?.toHumanReadable() ?: "",
                         modifier = Modifier.width(300.dp)
@@ -155,7 +155,7 @@ fun MainListenScreen(
                 author = article.author,
                 thumbnailUrl = article.thumbnailUrl ?: "",
                 thumbnailDescription = article.thumbnailDescription ?: "",
-                onCardClick = { viewArticle(article.articleUrl) },
+                onCardClick = { onPlayAudio(article.articleUrl) },
                 date = article.date?.toHumanReadable() ?: "",
                 isAudio = true
             )
@@ -168,5 +168,5 @@ fun MainListenScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainListenScreenPreview() {
-    MainListenScreen(viewArticle = {})
+    MainListenScreen(onPlayAudio = {})
 }
