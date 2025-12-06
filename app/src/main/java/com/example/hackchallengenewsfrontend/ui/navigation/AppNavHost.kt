@@ -176,7 +176,6 @@ fun SetupNavHost(
                     ) {
                         IndividualListenScreen(
                             articleID = selectedArticleId!!,
-                            exoPlayer = player.value!!
                         )
                     }
                 }

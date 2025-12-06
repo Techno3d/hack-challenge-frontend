@@ -61,25 +61,20 @@ import kotlin.times
 @Composable
 fun IndividualListenScreen(
     articleID: Int,
-    exoPlayer: ExoPlayer,
-    audioViewModel: AudioViewModel = hiltViewModel<AudioViewModel>(),
     articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>(),
     playerViewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>(),
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     // Collect audio state
-    val audioState by audioViewModel.uiStateFlow.collectAsStateWithLifecycle()
+    val audioState by playerViewModel.uiStateFlow.collectAsStateWithLifecycle()
 
     // Collect article state
     val articleState by articleViewModel.uiStateFlow.collectAsStateWithLifecycle()
 
     LaunchedEffect(articleID) {
-        audioViewModel.loadAudio(articleID)
         articleViewModel.loadArticle(articleID)
-        val audio = articleViewModel.getAudio()
-        if(audio != null)
-            playerViewModel.loadAudio(audio)
+        playerViewModel.loadAudio(articleID)
     }
 
     // Helper function to format seconds to MM:SS
@@ -155,8 +150,8 @@ fun IndividualListenScreen(
                 .padding(top = 8.dp, bottom = 16.dp)
         ) {
             Slider(
-                value = audioState.currentPosition,
-                onValueChange = { audioViewModel.seekTo(it) },
+                value = audioState.currentPosition.toFloat()/audioState.duration.toFloat(),
+                onValueChange = { playerViewModel.seekTo(it) },
                 colors = SliderDefaults.colors(
                     thumbColor = Color.White,
                     activeTrackColor = Color.White,
@@ -170,12 +165,12 @@ fun IndividualListenScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = formatTime(audioState.currentPosition * audioState.duration),
+                    text = formatTime((audioState.currentPosition / 10000).toFloat()),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp
                 )
                 Text(
-                    text = formatTime(audioState.duration),
+                    text = formatTime((audioState.duration/1000).toFloat()),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp
                 )
@@ -189,7 +184,7 @@ fun IndividualListenScreen(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = { audioViewModel.skipBackward() }) {
+            IconButton(onClick = { playerViewModel.skipBackward() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_skipbackward),
                     contentDescription = "Skip Back 15 Seconds",
@@ -198,7 +193,7 @@ fun IndividualListenScreen(
                 )
             }
 
-            IconButton(onClick = { audioViewModel.playPause() }) {
+            IconButton(onClick = { playerViewModel.playPause() }) {
                 Icon(
                     painter = if (audioState.isPlaying) painterResource(id = R.drawable.ic_pausebutton)
                     else painterResource(id = R.drawable.ic_playbutton),
@@ -208,7 +203,7 @@ fun IndividualListenScreen(
                 )
             }
 
-            IconButton(onClick = { audioViewModel.skipForward() }) {
+            IconButton(onClick = { playerViewModel.skipForward() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_skipforward),
                     contentDescription = "Skip Forward 15 Seconds",
@@ -234,7 +229,7 @@ fun IndividualListenScreen(
 
             Slider(
                 value = audioState.volume,
-                onValueChange = { audioViewModel.setVolume(it) },
+                onValueChange = { playerViewModel.setVolume(it) },
                 colors = SliderDefaults.colors(
                     thumbColor = Color.White,
                     activeTrackColor = Color.White,
