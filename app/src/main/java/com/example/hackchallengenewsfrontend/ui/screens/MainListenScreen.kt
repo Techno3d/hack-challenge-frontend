@@ -22,6 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,6 +33,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
 import com.example.hackchallengenewsfrontend.ui.components.NewsCard
+import com.example.hackchallengenewsfrontend.ui.theme.Primary
+import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 
 @Composable
 fun MainListenScreen(
@@ -51,20 +55,21 @@ fun MainListenScreen(
             ) {
                 Column {
                     Text(
-                        "Scope",
-                        modifier = Modifier
-                            .padding(vertical = 2.dp),
-                        fontSize = 40.sp,
+                        text = "Scope",
+                        modifier = Modifier.padding(vertical = 2.dp),
+                        fontSize = 36.sp,
                         textAlign = TextAlign.Left,
-                        color = Color.White
+                        fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.Bold,
+                        color = Primary
                     )
                     Text(
-                        "Audio",
-                        modifier = Modifier
-                            .padding(vertical = 2.dp),
-                        fontSize = 20.sp,
+                        text = "Audio",
+                        modifier = Modifier.padding(vertical = 2.dp),
+                        fontSize = 24.sp,
                         textAlign = TextAlign.Left,
-                        color = Color.LightGray
+                        fontWeight = FontWeight.SemiBold,
+                        color = Secondary
                     )
                 }
                 IconButton(onClick = {/* TODO: Search Functionality */ }) {

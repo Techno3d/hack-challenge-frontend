@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,18 +69,20 @@ fun NewsScreen(
                 verticalAlignment = Alignment.CenterVertically) {
                 Column {
                     Text(
-                        "Scope",
+                        text = "Scope",
                         modifier = Modifier.padding(vertical = 2.dp),
                         fontSize = 36.sp,
                         textAlign = TextAlign.Left,
                         fontStyle = FontStyle.Italic,
+                        fontWeight = FontWeight.Bold,
                         color = Primary
                     )
                     Text(
-                        "Home",
+                        text = "Home",
                         modifier = Modifier.padding(vertical = 2.dp),
-                        fontSize = 36.sp,
+                        fontSize = 24.sp,
                         textAlign = TextAlign.Left,
+                        fontWeight = FontWeight.SemiBold,
                         color = Secondary
                     )
                 }
