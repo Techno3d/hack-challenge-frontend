@@ -122,9 +122,7 @@ fun SetupNavHost(navController : NavHostController, playerViewModel: PlayerViewM
         composable(
             "audio",
         ) {
-            exoPlayer.value?.let {
-                MainListenScreen(exoPlayer=it)
-            }
+            MainListenScreen()
         }
         composable(
             "saved",
