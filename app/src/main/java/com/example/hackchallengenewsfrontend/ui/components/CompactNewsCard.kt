@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -86,13 +87,14 @@ fun CompactNewsCard(
                 .padding(vertical = 12.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = newsSource, fontSize = 15.sp, color = Primary)
+            Text(text = newsSource, fontSize = 15.sp, color = Primary, fontWeight = FontWeight.SemiBold)
             Text(
                 text = title,
                 fontSize = 18.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Left,
+                fontWeight = FontWeight.SemiBold,
                 color = Primary
             )
 
