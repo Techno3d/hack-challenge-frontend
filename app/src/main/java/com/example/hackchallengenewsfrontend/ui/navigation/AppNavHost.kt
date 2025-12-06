@@ -122,7 +122,7 @@ fun SetupNavHost(navController : NavHostController){
         composable(
             "saved",
         ) {
-            SavedScreen()
+            SavedScreen() {id -> navController.navigate("article/$id")}
         }
     }
 }

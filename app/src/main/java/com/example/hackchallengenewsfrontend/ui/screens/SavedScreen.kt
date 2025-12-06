@@ -1,5 +1,7 @@
 package com.example.hackchallengenewsfrontend.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,15 +29,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
 import com.example.hackchallengenewsfrontend.ui.components.FilterRow
+import com.example.hackchallengenewsfrontend.ui.screens.toHumanReadable
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
+import com.example.hackchallengenewsfrontend.viewmodels.SavedViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SavedScreen(){
-
+fun SavedScreen(
+    savedViewModel: SavedViewModel = hiltViewModel<SavedViewModel>(),
+    navToArticle: (Int) -> Unit
+){
+    val uiState by savedViewModel.uiStateFlow.collectAsStateWithLifecycle()
     //Use viewmodel data
     LazyColumn(modifier = Modifier
         .fillMaxSize()
@@ -75,24 +86,24 @@ fun SavedScreen(){
             }
             Spacer(Modifier.height(30.dp))
         }
-        items(listOf<String>("art 1", "art 2")){ article ->
+        items(uiState.savedArticles){ article ->
             CompactNewsCard(
-                title = article,
-                newsSource = "TEMP SOURCE",
-                author = "TEMP AUTHOR",
-                thumbnailUrl = "TEMP URL",
-                thumbnailDescription = "TEMP DESC",
-                onCardClick = {},
-                date = "TEMP DATE",
-                isAudio = if(article == "art 1") true else false
+                title = article.title,
+                newsSource = article.newsSource,
+                author = article.author,
+                thumbnailUrl = article.thumbnailUrl ?: "",
+                thumbnailDescription = article.thumbnailDescription ?: "",
+                onCardClick = {navToArticle(article.id)},
+                date = article.date?.toHumanReadable() ?: "Weee",
             )
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
 fun SavedScreenPreview(){
-    SavedScreen()
+    SavedScreen() {}
 }

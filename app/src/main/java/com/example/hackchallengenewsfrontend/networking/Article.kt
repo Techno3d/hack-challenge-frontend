@@ -44,8 +44,8 @@ data class User (
 data class Message (
     val message: String,
     @SerialName("audio_file")
-    val audioFile: String?,
-    val user: User
+    val audioFile: String? = "",
+    val user: User = User(id = 2, username = "johndoe", email = "john@example.com")
 )
 
 @Serializable
