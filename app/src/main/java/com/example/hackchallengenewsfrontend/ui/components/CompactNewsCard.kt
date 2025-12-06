@@ -1,5 +1,6 @@
 package com.example.hackchallengenewsfrontend.ui.components
 
+import android.R.attr.end
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -70,7 +71,7 @@ fun CompactNewsCard(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         AsyncImage(
-            model = thumbnailUrl.ifEmpty { getLogoForSource(newsSource)},
+            model = thumbnailUrl.ifEmpty { getLogoForSource(newsSource) },
             contentDescription = thumbnailDescription,
             contentScale = ContentScale.Crop,
 //            placeholder = ,
@@ -87,42 +88,61 @@ fun CompactNewsCard(
                 .padding(vertical = 12.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = newsSource, fontSize = 15.sp, color = Primary, fontWeight = FontWeight.SemiBold)
-            Text(
-                text = title,
-                fontSize = 18.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Left,
-                fontWeight = FontWeight.SemiBold,
-                color = Primary
-            )
+            Column {
+                Text(
+                    text = newsSource,
+                    fontSize = 12.sp,
+                    color = Primary,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    text = title,
+                    fontSize = 14.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    textAlign = TextAlign.Left,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Primary,
+                    modifier = Modifier
+                        .padding(end = 12.dp)
+                )
+            }
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
+                    .padding(end = 12.dp)
             ) {
-                if(!isAudio) {
-                    Text(text = "$date  \u2022  $author", fontSize = 12.sp, color = Secondary)
-                }
-                else{
-                    Row(verticalAlignment = Alignment.CenterVertically){
-                        IconButton(onClick = {/* TODO: Play Functionality */ }) {
+                if (!isAudio) {
+                    Text(
+                        text = "$date  \u2022  $author",
+                        fontSize = 12.sp,
+                        color = Secondary,
+                        modifier = Modifier.weight(1f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                } else {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = {/* TODO: Play Functionality */ },
+                            modifier = Modifier.size(28.dp)) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_cardplaybutton),
                                 contentDescription = "Play Button",
                                 tint = Color.White,
                                 modifier = Modifier.size(24.dp)
                             )
-                            if(!isPlaying) {
+                            if (!isPlaying) {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_playbutton),
                                     contentDescription = "Play Button",
                                     tint = Color.Black,
                                     modifier = Modifier.size(12.dp)
                                 )
-                            }
-                            else{
+                            } else {
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_pausebutton),
                                     contentDescription = "Pause Button",
@@ -131,17 +151,17 @@ fun CompactNewsCard(
                                 )
                             }
                         }
-                        Text(text = "\u2022   $date", color = Color.White, fontSize = 12.sp)
+                        Text(text = "\u2022  $date", color = Color.White, fontSize = 12.sp)
                     }
                 }
-                IconButton(onClick = { onFavoriteClick() }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_bookmark),
-                        contentDescription = "Save Button",
-                        tint = if(isFavorited) Color.White else Color.LightGray,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_bookmark),
+                    contentDescription = "Save Button",
+                    tint = if (isFavorited) Color.White else Color.LightGray,
+                    modifier = Modifier.size(18.dp)
+                        .clickable(onClick = { onFavoriteClick() })
+                )
             }
         }
     }
@@ -153,13 +173,11 @@ fun CompactNewsCard(
 fun CompactNewsCardPreview() {
     CompactNewsCard(
         newsSource = "Cornell Chronicle",
-        title = "Winter storm snarls flights for post-Thanksgiving travelers in Chicago",
-        author = "Goated Author",
+        title = "Winter storm snarls flights for post-Thanksgiving travelers in  ChicagoChicagoChicagoChicagoChicagoChicagoChicagoChicagoChicagoChicago",
+        author = "Goated Author Chicago Chicago ChicagoChicago",
         thumbnailUrl = "https://d3i6fh83elv35t.cloudfront.net/static/2025/11/GettyImages-2248617554-1200x800.jpg",
         thumbnailDescription = "Winter Storm Snarls Air Travel In Chicago",
         date = "no",
-        isAudio = true,
-        isPlaying = true,
         onCardClick = {})
 }
 

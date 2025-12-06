@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import coil3.compose.AsyncImage
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.theme.Articles
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
@@ -72,17 +75,17 @@ fun NewsCard(
                 .aspectRatio(4f / 3f)
         )
         Column(
-            verticalArrangement = Arrangement.spacedBy(if(isCompact) 5.dp else 12.dp),
+            verticalArrangement = Arrangement.spacedBy(if(isCompact) 4.dp else 12.dp),
             modifier = Modifier
-                .padding(if(isCompact) 3.dp else 12.dp)
+                .padding(12.dp)
         ) {
-            Text(newsSource, fontSize = if(isCompact) 10.sp else 14.sp, textAlign = TextAlign.Left, color = Primary, fontWeight = FontWeight.SemiBold)
-            Text(title, fontSize = if(isCompact) 14.sp else 18.sp, textAlign = TextAlign.Left, color = Primary, lineHeight = if(isCompact) 16.sp else 20.sp, fontWeight = FontWeight.SemiBold)
+            Text(newsSource, fontSize = if(isCompact) 10.sp else 14.sp, textAlign = TextAlign.Left, color = Primary, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(title, fontSize = if(isCompact) 14.sp else 18.sp, textAlign = TextAlign.Left, color = Primary, lineHeight = if(isCompact) 16.sp else 20.sp, fontWeight = FontWeight.SemiBold, maxLines = if(isCompact) 4 else 5, overflow = TextOverflow.Ellipsis)
             Row(modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween){
                 if(!isAudio) {
-                    Text("$date $author", fontSize = 12.sp, color = Secondary)
+                    Text("$date \u2022 $author", fontSize = 12.sp, color = Secondary, modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
                 } else {
                     Row(verticalAlignment = Alignment.CenterVertically){
                         IconButton(onClick = { onPlayButtonClicked() }) {
@@ -112,16 +115,33 @@ fun NewsCard(
                         Text(text = " \u2022   $date", color = Color.White)
                     }
                 }
-                IconButton(onClick = { onFavoriteClick() }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_bookmark),
-                        contentDescription = "Save Button",
-                        tint = if(isFavorited) Color.White else Color.LightGray,
-                        modifier = Modifier.size(if(isCompact) 18.dp else 24.dp)
-                    )
-                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_bookmark),
+                    contentDescription = "Save Button",
+                    tint = if(isFavorited) Color.White else Color.LightGray,
+                    modifier = Modifier.size(if(isCompact) 18.dp else 24.dp)
+                        .clickable(onClick = { onFavoriteClick() })
+                )
             }
         }
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NewsCardPreview(){
+    NewsCard(
+        title = "Winter storm snarls flights for post-Thanksgiving travelers in  ChicagoChicagoChicagoChicagoChicagoChicagoChicagoChicagoChicagoChicago",
+        thumbnailUrl = "",
+        author = "Goated Author Chicago Chicago ChicagoChicago",
+        newsSource = "Cornell Chronicle",
+        date = "no",
+        isCompact = true,
+        onCardClick = {},
+        onFavoriteClick = {},
+        isFavorited = true,
+        onPlayButtonClicked = {}
+    )
 }

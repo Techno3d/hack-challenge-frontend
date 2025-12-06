@@ -165,7 +165,7 @@ fun IndividualListenScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = formatTime((audioState.currentPosition / 10000).toFloat()),
+                    text = formatTime((audioState.currentPosition / 1000).toFloat()),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp
                 )
