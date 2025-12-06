@@ -60,7 +60,7 @@ fun MainListenScreen(
         true // For now, showing all articles
     }
 
-    playerViewModel.loadAndPlayAudio(MediaItem.fromUri(Uri.encode("http://35.186.167.11:5000/audios/51.mp3")))
+    playerViewModel.loadAndPlayAudio(MediaItem.fromUri(("http://35.186.167.11:5000/audios/51.mp3")))
 
     LazyColumn(
         Modifier
