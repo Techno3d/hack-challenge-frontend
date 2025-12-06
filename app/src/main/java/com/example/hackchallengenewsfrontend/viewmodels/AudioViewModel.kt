@@ -3,6 +3,7 @@ package com.example.hackchallengenewsfrontend.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
 import com.example.hackchallengenewsfrontend.networking.ArticleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,7 @@ class AudioViewModel @Inject constructor(private val articleRepository: ArticleR
         val duration: Float = 225f, // Default 3:45 in seconds
         val volume: Float = 1f,
         val isPlaying: Boolean = false,
-        val currentAudio: MediaItem? = null
+        val currentAudio: MediaItem? = null,
     )
 
     fun loadAudio(articleID: Int) {

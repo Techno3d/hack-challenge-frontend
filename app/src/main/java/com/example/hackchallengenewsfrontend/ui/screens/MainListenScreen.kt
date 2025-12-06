@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.media3.exoplayer.ExoPlayer
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
 import com.example.hackchallengenewsfrontend.ui.components.NewsCard
@@ -44,7 +45,7 @@ import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainListenScreen(
-    onPlayAudio: (String) -> Unit,
+    exoPlayer: ExoPlayer,
     newsViewModel: NewsViewModel = hiltViewModel<NewsViewModel>()
 ) {
     val uiState by newsViewModel.uiStateFlow.collectAsStateWithLifecycle()
@@ -124,7 +125,7 @@ fun MainListenScreen(
                         title = article.title,
                         thumbnailUrl = article.thumbnailUrl ?: "",
                         thumbnailDescription = article.thumbnailDescription ?: "",
-                        onCardClick = { onPlayAudio(article.articleUrl) },
+                        onCardClick = { /* TODO: Do this on click */ },
                         author = article.author,
                         date = article.date?.toHumanReadable() ?: "",
                         modifier = Modifier.width(300.dp),
@@ -157,7 +158,7 @@ fun MainListenScreen(
                 author = article.author,
                 thumbnailUrl = article.thumbnailUrl ?: "",
                 thumbnailDescription = article.thumbnailDescription ?: "",
-                onCardClick = { onPlayAudio(article.articleUrl) },
+                onCardClick = { /* TODO: Add the on click */},
                 date = article.date?.toHumanReadable() ?: "",
                 isAudio = true,
                 isFavorited = article.saved
@@ -165,11 +166,4 @@ fun MainListenScreen(
             Spacer(modifier = Modifier.height(24.dp))
         }
     }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
-@Composable
-fun MainListenScreenPreview() {
-    MainListenScreen(onPlayAudio = {})
 }

@@ -44,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.media3.exoplayer.ExoPlayer
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter.State.Empty.painter
 import com.example.hackchallengenewsfrontend.R
@@ -55,6 +56,7 @@ import kotlin.times
 @Composable
 fun IndividualListenScreen(
     articleID: Int,
+    exoPlayer: ExoPlayer,
     audioViewModel: AudioViewModel = hiltViewModel<AudioViewModel>(),
     articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>()
 ) {

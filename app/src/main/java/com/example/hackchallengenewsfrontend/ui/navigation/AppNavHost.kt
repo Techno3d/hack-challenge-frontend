@@ -25,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -38,6 +40,8 @@ import com.example.hackchallengenewsfrontend.ui.screens.ArticleViewScreen
 import com.example.hackchallengenewsfrontend.ui.screens.MainListenScreen
 import com.example.hackchallengenewsfrontend.ui.screens.NewsScreen
 import com.example.hackchallengenewsfrontend.viewmodels.ArticleViewModel
+import com.example.hackchallengenewsfrontend.viewmodels.PlayerViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -96,7 +100,8 @@ fun BottomNavigationBar(navController : NavHostController){
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SetupNavHost(navController : NavHostController){
+fun SetupNavHost(navController : NavHostController, playerViewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>()){
+    val exoPlayer = playerViewModel.playerState.collectAsStateWithLifecycle()
     NavHost(
         navController = navController,
         startDestination = "NewsScreen"
@@ -117,7 +122,9 @@ fun SetupNavHost(navController : NavHostController){
         composable(
             "audio",
         ) {
-            MainListenScreen({ })
+            exoPlayer.value?.let {
+                MainListenScreen(exoPlayer=it)
+            }
         }
         composable(
             "saved",
