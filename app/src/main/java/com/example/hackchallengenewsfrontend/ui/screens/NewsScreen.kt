@@ -159,7 +159,9 @@ fun NewsScreen(
                 author = article.author,
                 thumbnailUrl = article.thumbnailUrl ?: "",
                 thumbnailDescription = article.thumbnailDescription ?: "",
-                onCardClick = { viewArticle(article.id) }
+                onCardClick = { viewArticle(article.id) },
+                onFavoriteClick = {newsViewModel.toggleFavorite(article.id, article.saved)},
+                isFavorited = article.saved,
             )
         }
     }
