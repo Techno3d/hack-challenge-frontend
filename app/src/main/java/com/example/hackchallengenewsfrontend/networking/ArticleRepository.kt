@@ -42,7 +42,8 @@ class ArticleRepository @Inject constructor(
                 date = LocalDateTime.parse(article.publishingDate),
                 id = article.id,
                 text = article.text,
-                audioFileName = article.audioFile
+                audioFileName = article.audioFile,
+                saved = article.saved ?: false
             )
         }
         return Result.success(articles!!)
@@ -64,7 +65,8 @@ class ArticleRepository @Inject constructor(
                 date = LocalDateTime.parse(article.publishingDate),
                 id = article.id,
                 text = article.text,
-                audioFileName = article.audioFile
+                audioFileName = article.audioFile,
+                saved = article.saved ?: false
             )
         }
         return Result.success(articles!!)
@@ -86,7 +88,8 @@ class ArticleRepository @Inject constructor(
                 date = LocalDateTime.parse(article.publishingDate),
                 id = article.id,
                 text = article.text,
-                audioFileName = article.audioFile
+                audioFileName = article.audioFile,
+                saved = article.saved ?: false
             )
         return Result.success(articles)
     }
@@ -107,7 +110,8 @@ class ArticleRepository @Inject constructor(
                 date = LocalDateTime.parse(article.publishingDate),
                 id = article.id,
                 text = article.text,
-                audioFileName = article.audioFile
+                audioFileName = article.audioFile,
+                saved = article.saved ?: false
             )
         }
         return Result.success(articles!!)

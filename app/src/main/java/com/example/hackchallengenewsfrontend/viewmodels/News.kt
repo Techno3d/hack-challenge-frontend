@@ -14,4 +14,5 @@ data class News (
     val id: Int,
     val text: String,
     val audioFileName: String? = null,
+    val saved: Boolean = false
 )
