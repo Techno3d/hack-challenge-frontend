@@ -133,6 +133,7 @@ fun MainListenScreen(
                         author = article.author,
                         date = article.date?.toHumanReadable() ?: "",
                         modifier = Modifier.width(300.dp),
+                        isAudio = true,
                         isFavorited = article.saved,
                         onFavoriteClick = {newsViewModel.toggleFavorite(article.id, article.saved)},
                     )

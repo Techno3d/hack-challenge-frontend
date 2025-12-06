@@ -22,15 +22,28 @@ class ArticleViewModel @Inject constructor(
     val uiStateFlow = _uiStateFlow.asStateFlow()
 
     fun toggleFavorite(articleId: Int, isFavorited: Boolean) {
-        viewModelScope.launch{
-            if(isFavorited){
+        // Optimistic UI update - respond immediately
+        _uiStateFlow.value = _uiStateFlow.value.copy(
+            saved = !isFavorited
+        )
+
+        // Then make the API call in the background
+        viewModelScope.launch {
+            val result = if (isFavorited) {
                 articleRepository.unFavoriteArticle(articleId)
-            }
-            else{
+            } else {
                 articleRepository.favoriteArticle(articleId)
+            }
+
+            // Revert on failure
+            result.onFailure {
+                _uiStateFlow.value = _uiStateFlow.value.copy(
+                    saved = isFavorited // Revert to original state
+                )
             }
         }
     }
+
 
     data class ArticleUIState(
         val title: String = "",
