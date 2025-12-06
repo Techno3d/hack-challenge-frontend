@@ -20,9 +20,19 @@ class NewsViewModel @Inject constructor(
     private val _uiStateFlow = MutableStateFlow(NewsUIState())
     val uiStateFlow = _uiStateFlow.asStateFlow()
 
+    fun toggleFavorite(articleId: Int, isFavorited: Boolean) {
+        viewModelScope.launch{
+            if(isFavorited){
+                articleRepository.unFavoriteArticle(articleId)
+            }
+            else{
+                articleRepository.favoriteArticle(articleId)
+            }
+        }
+    }
     data class NewsUIState(
         val feed: List<News> = emptyList(),
-        val filters: List<String> = emptyList<String>(),
+        val filters: List<String> = emptyList<String>()
     ) {
         val filteredFeed: List<News>
             get() = feed

@@ -46,6 +46,8 @@ fun CompactNewsCard(
     thumbnailDescription: String,
     date: String,
     onCardClick: () -> Unit,
+    onFavoriteClick: () -> Unit = {},
+    isFavorited: Boolean = false,
     isAudio: Boolean = false,
     isPlaying: Boolean = false,
     modifier: Modifier = Modifier,
