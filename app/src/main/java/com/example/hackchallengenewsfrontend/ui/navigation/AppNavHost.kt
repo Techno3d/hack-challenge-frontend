@@ -65,7 +65,6 @@ fun BottomNavigationBar(navController : NavHostController){
     ){
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
-        // TODO: Add selected state, change selected icon color to only fill icon, not icon background
         NavigationBarItem(
             icon = { Icon(painter = painterResource(id = R.drawable.ic_home), contentDescription = "Home") },
             label = { Text("Home") },
@@ -74,7 +73,6 @@ fun BottomNavigationBar(navController : NavHostController){
             onClick = { navController.navigate("NewsScreen") }
         )
 
-        // TODO: Add real icon + selected state
         NavigationBarItem(
             icon = { Icon(painter = painterResource(id = R.drawable.ic_headphone), contentDescription = "Audio") },
             label = { Text("Audio") },
@@ -83,7 +81,6 @@ fun BottomNavigationBar(navController : NavHostController){
             onClick = { navController.navigate("audio") }
         )
 
-        //TODO: Add real icon + selected state
         NavigationBarItem(
             icon = { Icon(painter = painterResource(id = R.drawable.ic_bookmark), contentDescription = "Saved") },
             label = { Text("Saved") },

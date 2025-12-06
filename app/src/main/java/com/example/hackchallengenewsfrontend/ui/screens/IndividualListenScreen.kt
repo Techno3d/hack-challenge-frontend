@@ -6,14 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -34,72 +32,92 @@ import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter.State.Empty.painter
 import com.example.hackchallengenewsfrontend.R
+import com.example.hackchallengenewsfrontend.viewmodels.ArticleViewModel
+import com.example.hackchallengenewsfrontend.viewmodels.AudioViewModel
+import kotlin.times
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IndividualListenScreen() {
-    // State to manage the Sheet's visibility (not directly in this Composable, but needed for context)
+fun IndividualListenScreen(
+    articleUrl: String,
+    audioViewModel: AudioViewModel = hiltViewModel<AudioViewModel>(),
+    articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>()
+) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    // Internal States for the UI elements
-    //TODO: VOLUME LEVEL BASED ON PHONE VOLUME LEVEL
-    var playbackPosition by remember { mutableFloatStateOf(0.0f) } // 0.0 to 1.0
-    var volumeLevel by remember { mutableFloatStateOf(0.0f) }    // 0.0 to 1.0
-    var isPlaying by remember { mutableStateOf(false) }
+    // Collect audio state
+    val audioState by audioViewModel.uiStateFlow.collectAsStateWithLifecycle()
 
-    // Use a placeholder for the image resource
-    val imagePlaceholder = Color(0xFFCCCCCC)
+    // Collect article state
+    val articleState by articleViewModel.uiStateFlow.collectAsStateWithLifecycle()
 
-    // The main container for the modal content
+    LaunchedEffect(articleUrl) {
+        audioViewModel.loadAudio(articleUrl)
+        // TODO: articleViewModel.loadArticle(articleUrl)
+    }
+
+    // Helper function to format seconds to MM:SS
+    fun formatTime(seconds: Float): String {
+        val mins = (seconds / 60).toInt()
+        val secs = (seconds % 60).toInt()
+        return "%d:%02d".format(mins, secs)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.9f)
-            .background(Color.Black) // Dark background to match the image
+            .background(Color.Black)
             .padding(24.dp)
             .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // --- 1. Audio Thumbnail / Header ---
+        // Image...
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
                 .padding(bottom = 16.dp)
         ) {
-            // Placeholder for the main image
-            Box(
+            AsyncImage(
+                model = articleState.mainImage,
+                contentDescription = articleState.mainImageDescription ?: "Article thumbnail",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(imagePlaceholder, shape = RoundedCornerShape(8.dp))
+                    .background(Color(0xFFCCCCCC), shape = RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp))
             )
         }
 
-        // --- 2. Title and Subtitle ---
-        Row() {
+        // Title and bookmark...
+        Row {
             Column(
                 modifier = Modifier
                     .weight(0.8f)
                     .padding(vertical = 8.dp)
             ) {
                 Text(
-                    text = "Scope Audio",
+                    text = articleState.newsSource,
                     color = Color.White,
                     fontSize = 14.sp
                 )
                 Text(
-                    text = "Title Title Title Title title title tiel tiel title itielti ",
+                    text = articleState.title,
                     color = Color.White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -108,27 +126,25 @@ fun IndividualListenScreen() {
                 )
             }
 
-            // Bookmark icon (top right)
-            IconButton(onClick = {/* TODO: Save Functionality */ }) {
+            IconButton(onClick = { /* TODO: Save */ }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_bookmark),
                     contentDescription = "Save",
                     tint = Color.White,
-                    modifier = Modifier
-                        .padding(12.dp)
+                    modifier = Modifier.padding(12.dp)
                 )
             }
         }
 
-        // --- 3. Playback Slider / Progress Bar ---
+        // Playback slider
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp, bottom = 16.dp)
         ) {
             Slider(
-                value = playbackPosition,
-                onValueChange = { playbackPosition = it },
+                value = audioState.currentPosition,
+                onValueChange = { audioViewModel.seekTo(it) },
                 colors = SliderDefaults.colors(
                     thumbColor = Color.White,
                     activeTrackColor = Color.White,
@@ -141,23 +157,19 @@ fun IndividualListenScreen() {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                // Current Time
-                //TODO: MAKE THIS NOT HARD-CODED
                 Text(
-                    text = "video start 0 0 0 ",
+                    text = formatTime(audioState.currentPosition * audioState.duration),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp
                 )
-                // Total Time
                 Text(
-                    text = "video length end",
+                    text = formatTime(audioState.duration),
                     color = Color.White.copy(alpha = 0.7f),
                     fontSize = 12.sp
                 )
             }
         }
-
-        // --- 4. Playback Controls ---
+        // Playback controls
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -165,8 +177,7 @@ fun IndividualListenScreen() {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Skip Back 15s
-            IconButton(onClick = { /* Handle skip back */ }) {
+            IconButton(onClick = { audioViewModel.skipBackward() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_skipbackward),
                     contentDescription = "Skip Back 15 Seconds",
@@ -175,19 +186,17 @@ fun IndividualListenScreen() {
                 )
             }
 
-            // Play / Pause Button
-            IconButton(onClick = { isPlaying = !isPlaying }) {
+            IconButton(onClick = { audioViewModel.playPause() }) {
                 Icon(
-                    painter = if (isPlaying) painterResource(id = R.drawable.ic_pausebutton)
+                    painter = if (audioState.isPlaying) painterResource(id = R.drawable.ic_pausebutton)
                     else painterResource(id = R.drawable.ic_playbutton),
-                    contentDescription = if (isPlaying) "Pause" else "Play",
+                    contentDescription = if (audioState.isPlaying) "Pause" else "Play",
                     tint = Color.White,
                     modifier = Modifier.size(30.dp)
                 )
             }
 
-            // Skip Forward 15s
-            IconButton(onClick = { /* Handle skip forward */ }) {
+            IconButton(onClick = { audioViewModel.skipForward() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_skipforward),
                     contentDescription = "Skip Forward 15 Seconds",
@@ -197,14 +206,13 @@ fun IndividualListenScreen() {
             }
         }
 
-        // --- 5. Volume Slider ---
+        // Volume slider
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Volume Down Icon
             Icon(
                 painter = painterResource(id = R.drawable.ic_volumedown),
                 contentDescription = "Volume Down",
@@ -212,10 +220,9 @@ fun IndividualListenScreen() {
                 modifier = Modifier.size(16.dp)
             )
 
-            // Volume Slider
             Slider(
-                value = volumeLevel,
-                onValueChange = { volumeLevel = it },
+                value = audioState.volume,
+                onValueChange = { audioViewModel.setVolume(it) },
                 colors = SliderDefaults.colors(
                     thumbColor = Color.White,
                     activeTrackColor = Color.White,
@@ -226,7 +233,6 @@ fun IndividualListenScreen() {
                     .padding(horizontal = 8.dp)
             )
 
-            // Volume Up Icon
             Icon(
                 painter = painterResource(id = R.drawable.ic_volumeup),
                 contentDescription = "Volume Up",
@@ -237,36 +243,9 @@ fun IndividualListenScreen() {
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun IndividualListenScreenPreview() {
-    IndividualListenScreen()
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true, heightDp = 800)
-@Composable
-fun IndividualListenScreenInBottomSheetPreview() {
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    ModalBottomSheet(
-        onDismissRequest = { },
-        sheetState = sheetState,
-        containerColor = Color.Black,
-        dragHandle = {
-            Box(
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .width(32.dp)
-                    .height(4.dp)
-                    .background(
-                        Color.White.copy(alpha = 0.4f),
-                        shape = RoundedCornerShape(2.dp)
-                    )
-            )
-        }
-    ) {
-        IndividualListenScreen()
-    }
+    // IndividualListenScreen()
 }
