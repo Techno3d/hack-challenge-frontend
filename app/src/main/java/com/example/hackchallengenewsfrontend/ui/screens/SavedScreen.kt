@@ -75,14 +75,6 @@ fun SavedScreen(
                         color = Secondary
                     )
                 }
-                IconButton(onClick = {/* TODO: Search Functionality */ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_searchbutton),
-                        contentDescription = "Search Button",
-                        tint = Color.White,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
             }
             Spacer(Modifier.height(30.dp))
         }
