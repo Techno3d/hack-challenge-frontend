@@ -192,7 +192,7 @@ fun NewsScreen(
                             // Entering loading: fade in
                             fadeIn(animationSpec = tween(animationMsDuration)) togetherWith
                                     slideOutVertically(
-                                        targetOffsetY = { fullHeight -> -fullHeight },
+                                        targetOffsetY = { fullHeight -> fullHeight },
                                         animationSpec = tween(animationMsDuration)
                                     ) + fadeOut(animationSpec = tween(animationMsDuration))
                         } else {

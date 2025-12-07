@@ -186,7 +186,7 @@ fun MainListenScreen(
                         if (targetState) {
                             fadeIn(animationSpec = tween(animationMsDuration)) togetherWith
                                     slideOutVertically(
-                                        targetOffsetY = { fullHeight -> -fullHeight },
+                                        targetOffsetY = { fullHeight -> fullHeight },
                                         animationSpec = tween(animationMsDuration)
                                     ) + fadeOut(animationSpec = tween(animationMsDuration))
                         } else {
@@ -203,7 +203,7 @@ fun MainListenScreen(
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(400.dp),
+                                .height(600.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
