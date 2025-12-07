@@ -3,6 +3,11 @@ package com.example.hackchallengenewsfrontend.ui.screens
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +28,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +49,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
 import com.example.hackchallengenewsfrontend.ui.components.NewsCard
+import com.example.hackchallengenewsfrontend.ui.components.ScopeSearchBar
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
@@ -53,13 +62,17 @@ fun MainListenScreen(
     newsViewModel: NewsViewModel = hiltViewModel<NewsViewModel>()
 ) {
     val uiState by newsViewModel.uiStateFlow.collectAsStateWithLifecycle()
+    val searchQuery by newsViewModel.searchQuery.collectAsStateWithLifecycle()
+    var isSearching by remember { mutableStateOf(false) }
+
+    val audioArticles = uiState.feed.filter { true }
 
     // Filter articles that have audio
-    val audioArticles = uiState.feed.filter { article ->
-        // TODO: Replace with actual audio field check when backend provides it
-        // article.audioUrl != null || article.hasAudio == true
-        true // For now, showing all articles
-    }
+//    val audioArticles = uiState.feed.filter { article ->
+//        // TODO: Replace with actual audio field check when backend provides it
+//        // article.audioUrl != null || article.hasAudio == true
+//        true // For now, showing all articles
+//    }
 
     LazyColumn(
         Modifier
@@ -93,7 +106,7 @@ fun MainListenScreen(
                         color = Secondary
                     )
                 }
-                IconButton(onClick = {/* TODO: Search Functionality */ }) {
+                IconButton(onClick = { isSearching = !isSearching }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_searchbutton),
                         contentDescription = "Search Button",
@@ -102,6 +115,21 @@ fun MainListenScreen(
                     )
                 }
             }
+
+            AnimatedVisibility(
+                visible = isSearching,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Column {
+                    Spacer(Modifier.height(12.dp))
+                    ScopeSearchBar(
+                        query = searchQuery,
+                        onQueryChange = { newsViewModel.updateSearchQuery(it) },
+                    )
+                }
+            }
+
             Spacer(Modifier.height(24.dp))
             Text(
                 "Editor's Picks",
@@ -159,20 +187,22 @@ fun MainListenScreen(
             Spacer(modifier = Modifier.height(12.dp))
         }
 
-        items(audioArticles.drop(3)) { article ->
-            CompactNewsCard(
-                title = article.title,
-                newsSource = article.newsSource,
-                author = article.author,
-                thumbnailUrl = article.thumbnailUrl ?: "",
-                thumbnailDescription = article.thumbnailDescription ?: "",
-                onCardClick = {onCardClick(article.id)},
-                date = article.date?.toHumanReadable() ?: "",
-                isAudio = true,
-                isFavorited = article.saved,
-                onFavoriteClick = {newsViewModel.toggleFavorite(article.id, article.saved)},
-            )
-            Spacer(modifier = Modifier.height(24.dp))
+        if(audioArticles.size > 3) {
+            items(audioArticles.drop(3)) { article ->
+                CompactNewsCard(
+                    title = article.title,
+                    newsSource = article.newsSource,
+                    author = article.author,
+                    thumbnailUrl = article.thumbnailUrl ?: "",
+                    thumbnailDescription = article.thumbnailDescription ?: "",
+                    onCardClick = { onCardClick(article.id) },
+                    date = article.date?.toHumanReadable() ?: "",
+                    isAudio = true,
+                    isFavorited = article.saved,
+                    onFavoriteClick = { newsViewModel.toggleFavorite(article.id, article.saved) },
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+            }
         }
         item {
             Spacer(modifier = Modifier.height(100.dp))

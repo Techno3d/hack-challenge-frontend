@@ -1,5 +1,7 @@
 package com.example.hackchallengenewsfrontend.viewmodels
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hackchallengenewsfrontend.networking.ArticleRepository
@@ -17,6 +19,44 @@ class SavedViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiStateFlow = MutableStateFlow(SavedUIState())
     val uiStateFlow = _uiStateFlow.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    private val _allSavedArticles = MutableStateFlow<List<News>>(emptyList())
+
+    init {
+        loadSavedArticles()
+    }
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+        filterArticles()
+    }
+
+    private fun filterArticles() {
+        val query = _searchQuery.value.lowercase()
+        val filtered = if (query.isEmpty()) {
+            _allSavedArticles.value
+        } else {
+            _allSavedArticles.value.filter { article ->
+                article.title.lowercase().contains(query) ||
+                        article.author.lowercase().contains(query) ||
+                        article.newsSource.lowercase().contains(query)
+            }
+        }
+        _uiStateFlow.value = _uiStateFlow.value.copy(savedArticles = filtered)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadSavedArticles() {
+        viewModelScope.launch {
+            articleRepository.getSavedArticles().onSuccess { articles ->
+                _allSavedArticles.value = articles
+                filterArticles()
+            }
+        }
+    }
 
     data class SavedUIState(
         val savedArticles: List<News> = emptyList<News>()

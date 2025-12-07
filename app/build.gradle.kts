@@ -54,6 +54,11 @@ dependencies {
     implementation("com.github.franmontiel:PersistentCookieJar:v1.0.1")
     implementation("androidx.compose.material:material-icons-core")
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.ui.text)
+    implementation(libs.androidx.compose.animation)
     val nav_version = "2.9.6"
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation(libs.androidx.core.ktx)

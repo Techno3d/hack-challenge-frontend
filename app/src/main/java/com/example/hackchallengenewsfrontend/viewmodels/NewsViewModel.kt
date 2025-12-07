@@ -20,6 +20,44 @@ class NewsViewModel @Inject constructor(
     private val _uiStateFlow = MutableStateFlow(NewsUIState())
     val uiStateFlow = _uiStateFlow.asStateFlow()
 
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    private val _allArticles = MutableStateFlow<List<News>>(emptyList())
+
+    init {
+        loadFeed()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun loadFeed() {
+        viewModelScope.launch {
+            articleRepository.getKNewestArticles(100).onSuccess { articles ->
+                _allArticles.value = articles
+                filterArticles()
+            }
+        }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+        filterArticles()
+    }
+
+    private fun filterArticles() {
+        val query = _searchQuery.value.lowercase()
+        val filtered = if (query.isEmpty()) {
+            _allArticles.value
+        } else {
+            _allArticles.value.filter { article ->
+                article.title.lowercase().contains(query) ||
+                        article.author.lowercase().contains(query) ||
+                        article.newsSource.lowercase().contains(query)
+            }
+        }
+        _uiStateFlow.value = _uiStateFlow.value.copy(feed = filtered)
+    }
+
     fun toggleFavorite(articleId: Int, isFavorited: Boolean) {
         // Optimistic UI update - update immediately
         _uiStateFlow.value = _uiStateFlow.value.copy(

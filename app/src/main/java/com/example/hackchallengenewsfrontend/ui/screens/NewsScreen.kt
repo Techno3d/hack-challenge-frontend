@@ -2,6 +2,11 @@ package com.example.hackchallengenewsfrontend.ui.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,6 +28,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +45,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
 import com.example.hackchallengenewsfrontend.ui.components.NewsCard
+import com.example.hackchallengenewsfrontend.ui.components.ScopeSearchBar
 import com.example.hackchallengenewsfrontend.ui.theme.Background
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 import com.example.hackchallengenewsfrontend.viewmodels.NewsViewModel
@@ -55,6 +64,8 @@ fun NewsScreen(
 ) {
     val popularItemsList = 2
     val uiState by newsViewModel.uiStateFlow.collectAsStateWithLifecycle()
+    val searchQuery by newsViewModel.searchQuery.collectAsStateWithLifecycle()
+    var isSearching by remember { mutableStateOf(false) }
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
@@ -86,7 +97,7 @@ fun NewsScreen(
                         color = Secondary
                     )
                 }
-                IconButton(onClick = {/* TODO: Search Functionality */ }) {
+                IconButton(onClick = { isSearching = !isSearching }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_searchbutton),
                         contentDescription = "Search Button",
@@ -95,6 +106,20 @@ fun NewsScreen(
                     )
                 }
             }
+            AnimatedVisibility(
+                visible = isSearching,
+                enter = fadeIn() + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                Column {
+                    Spacer(Modifier.height(12.dp))
+                    ScopeSearchBar(
+                        query = searchQuery,
+                        onQueryChange = { newsViewModel.updateSearchQuery(it) },
+                    )
+                }
+            }
+
             Spacer(Modifier.height(12.dp))
             //TODO Change FilterRow to be not hard-coded
 //            FilterRow(
@@ -128,24 +153,31 @@ fun NewsScreen(
                 )
                 Spacer(modifier = Modifier.height(24.dp))
             }
-            if (uiState.feed.size < popularItemsList) return@item
-            val laterItems = uiState.feed.slice(1..popularItemsList)
-            Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-                for (i in 0..1) {
-                    Column(modifier = Modifier.weight(0.5f)) {
-                        for (j in i..(laterItems.size - 1) step 2) {
-                            NewsCard(
-                                title = laterItems[j].title,
-                                thumbnailUrl = laterItems[j].thumbnailUrl ?: "",
-                                thumbnailDescription = laterItems[j].thumbnailDescription,
-                                author = laterItems[j].author,
-                                newsSource = laterItems[j].newsSource,
-                                date = laterItems[j].date?.toHumanReadable() ?: laterItems[j].date.toString(),
-                                isCompact = true,
-                                onCardClick = { viewArticle(laterItems[j].id) },
-                                isFavorited = laterItems[j].saved,
-                                onFavoriteClick = {newsViewModel.toggleFavorite(laterItems[j].id, laterItems[j].saved)},
-                            )
+            if(uiState.feed.size >= 3) {
+                val laterItems = uiState.feed.slice(1..popularItemsList)
+                Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+                    for (i in 0..1) {
+                        Column(modifier = Modifier.weight(0.5f)) {
+                            for (j in i..(laterItems.size - 1) step 2) {
+                                NewsCard(
+                                    title = laterItems[j].title,
+                                    thumbnailUrl = laterItems[j].thumbnailUrl ?: "",
+                                    thumbnailDescription = laterItems[j].thumbnailDescription,
+                                    author = laterItems[j].author,
+                                    newsSource = laterItems[j].newsSource,
+                                    date = laterItems[j].date?.toHumanReadable()
+                                        ?: laterItems[j].date.toString(),
+                                    isCompact = true,
+                                    onCardClick = { viewArticle(laterItems[j].id) },
+                                    isFavorited = laterItems[j].saved,
+                                    onFavoriteClick = {
+                                        newsViewModel.toggleFavorite(
+                                            laterItems[j].id,
+                                            laterItems[j].saved
+                                        )
+                                    },
+                                )
+                            }
                         }
                     }
                 }
@@ -160,20 +192,21 @@ fun NewsScreen(
                 color = Color.White
             )
         }
-        if (uiState.feed.size < popularItemsList+1) return@LazyColumn
-        val popularItems = uiState.feed.slice((popularItemsList+1)..(uiState.feed.size - 1))
-        items(popularItems) { article ->
-            CompactNewsCard(
-                title = article.title,
-                newsSource = article.newsSource,
-                date = article.date?.toHumanReadable() ?: article.date.toString(),
-                author = article.author,
-                thumbnailUrl = article.thumbnailUrl ?: "",
-                thumbnailDescription = article.thumbnailDescription ?: "",
-                onCardClick = { viewArticle(article.id) },
-                onFavoriteClick = {newsViewModel.toggleFavorite(article.id, article.saved)},
-                isFavorited = article.saved,
-            )
+        if(uiState.feed.size > 3) {
+            val popularItems = uiState.feed.slice((popularItemsList + 1)..(uiState.feed.size - 1))
+            items(popularItems) { article ->
+                CompactNewsCard(
+                    title = article.title,
+                    newsSource = article.newsSource,
+                    date = article.date?.toHumanReadable() ?: article.date.toString(),
+                    author = article.author,
+                    thumbnailUrl = article.thumbnailUrl ?: "",
+                    thumbnailDescription = article.thumbnailDescription ?: "",
+                    onCardClick = { viewArticle(article.id) },
+                    onFavoriteClick = { newsViewModel.toggleFavorite(article.id, article.saved) },
+                    isFavorited = article.saved,
+                )
+            }
         }
 
         item {
