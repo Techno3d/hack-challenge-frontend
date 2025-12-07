@@ -23,37 +23,42 @@ class SavedViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery = _searchQuery.asStateFlow()
 
-    private val _allSavedArticles = MutableStateFlow<List<News>>(emptyList())
-
     init {
         loadSavedArticles()
     }
 
-    fun updateSearchQuery(query: String) {
-        _searchQuery.value = query
-        filterArticles()
-    }
+    fun toggleFavorite(articleId: Int, isFavorited: Boolean) {
+        // Optimistically update UI by removing the article
+        val updatedArticles = _uiStateFlow.value.savedArticles.filter { it.id != articleId }
+        _uiStateFlow.value = _uiStateFlow.value.copy(savedArticles = updatedArticles)
 
-    private fun filterArticles() {
-        val query = _searchQuery.value.lowercase()
-        val filtered = if (query.isEmpty()) {
-            _allSavedArticles.value
-        } else {
-            _allSavedArticles.value.filter { article ->
-                article.title.lowercase().contains(query) ||
-                        article.author.lowercase().contains(query) ||
-                        article.newsSource.lowercase().contains(query)
+        // Make the API call
+        viewModelScope.launch {
+            val result = if (isFavorited) {
+                articleRepository.unFavoriteArticle(articleId)
+            } else {
+                articleRepository.favoriteArticle(articleId)
+            }
+
+            // Reload saved articles on failure to restore correct state
+            result.onFailure {
+                loadSavedArticles()
             }
         }
-        _uiStateFlow.value = _uiStateFlow.value.copy(savedArticles = filtered)
+    }
+
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun loadSavedArticles() {
         viewModelScope.launch {
             articleRepository.getSavedArticles().onSuccess { articles ->
-                _allSavedArticles.value = articles
-                filterArticles()
+                _uiStateFlow.value = _uiStateFlow.value.copy(
+                    savedArticles = articles
+                )
             }
         }
     }

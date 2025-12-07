@@ -2,6 +2,8 @@ package com.example.hackchallengenewsfrontend.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +41,9 @@ import com.example.hackchallengenewsfrontend.ui.screens.toHumanReadable
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
 import com.example.hackchallengenewsfrontend.viewmodels.SavedViewModel
+import androidx.compose.foundation.ExperimentalFoundationApi
 
+@OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SavedScreen(
@@ -78,18 +83,36 @@ fun SavedScreen(
             }
             Spacer(Modifier.height(30.dp))
         }
-        items(uiState.savedArticles){ article ->
-            CompactNewsCard(
-                title = article.title,
-                newsSource = article.newsSource,
-                author = article.author,
-                thumbnailUrl = article.thumbnailUrl ?: "",
-                thumbnailDescription = article.thumbnailDescription ?: "",
-                onCardClick = {navToArticle(article.id)},
-                date = article.date?.toHumanReadable() ?: "Weee",
-                isFavorited = true
-            )
-            Spacer(modifier = Modifier.height(24.dp))
+        items(
+            items = uiState.savedArticles,
+            key = {article -> article.id}
+        ) { article ->
+            Column(
+                modifier = Modifier.animateItem(
+                    fadeInSpec = null,
+                    fadeOutSpec = spring(
+                        dampingRatio = 0.8f,
+                        stiffness = 300f
+                    ),
+                    placementSpec = spring(
+                        dampingRatio = 0.8f,
+                        stiffness = 300f
+                    )
+                )
+            ) {
+                CompactNewsCard(
+                    title = article.title,
+                    newsSource = article.newsSource,
+                    author = article.author,
+                    thumbnailUrl = article.thumbnailUrl ?: "",
+                    thumbnailDescription = article.thumbnailDescription ?: "",
+                    onCardClick = { navToArticle(article.id) },
+                    date = article.date?.toHumanReadable() ?: "Weee",
+                    isFavorited = true,
+                    onFavoriteClick = { savedViewModel.toggleFavorite(article.id, article.saved) }
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+            }
         }
         item{
             Spacer(modifier = Modifier.height(120.dp))

@@ -3,6 +3,7 @@ package com.example.hackchallengenewsfrontend.networking
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -30,7 +31,7 @@ interface ArticleApiService {
         @Path("article_id") articleId: Int
     ): Response<Message>
 
-    @POST("articles/{article_id}/unsave")
+    @DELETE("articles/{article_id}/unsave")
     suspend fun unFavoriteArticle(
         @Path("article_id") articleId: Int
     ): Response<Message>
