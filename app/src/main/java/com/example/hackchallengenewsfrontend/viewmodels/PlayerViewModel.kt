@@ -72,7 +72,9 @@ class PlayerViewModel @Inject constructor(
             response.onSuccess { audio ->
                 _uiStateFlow.value = _uiStateFlow.value.copy(
                     currentAudio = audio,
-                    duration = 225000L
+                    duration = 225000L,
+                    isPlaying = false,
+                    currentPosition = 0L
                 )
                 exoPlayer.apply {
                     setMediaItem(audio)
@@ -80,6 +82,9 @@ class PlayerViewModel @Inject constructor(
                 }
                 print(exoPlayer.duration)
             }
+                .onFailure { error ->
+                    "we fucked up (audio generation)"
+                }
         }
     }
 
@@ -89,6 +94,15 @@ class PlayerViewModel @Inject constructor(
 
         _uiStateFlow.value = _uiStateFlow.value.copy(
             isPlaying = !_uiStateFlow.value.isPlaying
+        )
+    }
+
+    fun stop() {
+        exoPlayer.stop()
+        _uiStateFlow.value = _uiStateFlow.value.copy(
+            isPlaying = false,
+            currentPosition = 0L,
+            currentAudio = null
         )
     }
 

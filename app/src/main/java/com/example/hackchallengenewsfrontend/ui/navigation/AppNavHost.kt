@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -164,18 +165,25 @@ fun SetupNavHost(
                     selectedArticleId = id
                 })
 
+                LaunchedEffect(selectedArticleId) {
+                    if (selectedArticleId == null) {
+                        playerViewModel.stop()
+                    }
+                }
+
                 // Show bottom sheet when article is selected
-                if (selectedArticleId != null) {
+                selectedArticleId?.let { articleId ->
                     ModalBottomSheet(
                         onDismissRequest = {
+                            playerViewModel.stop()
                             selectedArticleId = null
-                            playerViewModel.exoPlayer.stop()
                         },
                         sheetState = sheetState,
                         containerColor = Color.Black
                     ) {
                         IndividualListenScreen(
                             articleID = selectedArticleId!!,
+                            playerViewModel = playerViewModel
                         )
                     }
                 }

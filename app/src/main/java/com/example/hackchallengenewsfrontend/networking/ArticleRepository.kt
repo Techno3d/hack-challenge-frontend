@@ -176,9 +176,16 @@ class ArticleRepository @Inject constructor(
     suspend fun getAudio(articleID: Int): Result<MediaItem> {
         val response = articleApiService.getArticleByID(articleID)
         if(!response.isSuccessful) return Result.failure(Throwable(response.errorBody().toString()))
-        val audioFileName = response.body()?.audioFile
+        var audioFileName = response.body()?.audioFile
         if(audioFileName == null) {
-            articleApiService.generateAudio(articleID)
+            val generateResponse = articleApiService.generateAudio(articleID)
+            if(!generateResponse.isSuccessful){
+                return Result.failure(Throwable(generateResponse.errorBody().toString()))
+            }
+            audioFileName = generateResponse.body()?.audioFile
+            if(audioFileName == null) {
+                return Result.failure(Throwable("Audio generation did not return filename"))
+            }
         }
         return Result.success(MediaItem.fromUri("http://35.186.167.11:5000/audios/$audioFileName".toUri()))
     }

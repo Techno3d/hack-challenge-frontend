@@ -63,7 +63,7 @@ import kotlin.times
 fun IndividualListenScreen(
     articleID: Int,
     articleViewModel: ArticleViewModel = hiltViewModel<ArticleViewModel>(),
-    playerViewModel: PlayerViewModel = hiltViewModel<PlayerViewModel>(),
+    playerViewModel: PlayerViewModel,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
