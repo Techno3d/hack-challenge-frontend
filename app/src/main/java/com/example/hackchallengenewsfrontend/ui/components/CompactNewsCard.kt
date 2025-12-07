@@ -38,6 +38,7 @@ import com.example.hackchallengenewsfrontend.ui.theme.Articles
 import com.example.hackchallengenewsfrontend.ui.theme.HackChallengeNewsFrontendTheme
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
 import com.example.hackchallengenewsfrontend.ui.theme.Secondary
+import com.example.hackchallengenewsfrontend.utils.getLogoForSource
 
 @Composable
 fun CompactNewsCard(
@@ -54,14 +55,6 @@ fun CompactNewsCard(
     isPlaying: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
-    fun getLogoForSource(sourceName: String): Int {
-        return when {
-            sourceName.contains("Cornell Daily Sun") -> R.drawable.cornell_daily_sun_logo
-            sourceName.contains("Cornell Chronicle") -> R.drawable.cornell_chronicle_logo
-            sourceName.contains("The Ithaca Voice") -> R.drawable.ithaca_voice_logo
-            else -> R.drawable.ic_launcher_foreground
-        }
-    }
     Row(
         modifier = modifier
             .fillMaxWidth()

@@ -51,6 +51,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePainter.State.Empty.painter
 import com.example.hackchallengenewsfrontend.R
+import com.example.hackchallengenewsfrontend.utils.getLogoForSource
 import com.example.hackchallengenewsfrontend.viewmodels.ArticleViewModel
 import com.example.hackchallengenewsfrontend.viewmodels.AudioViewModel
 import com.example.hackchallengenewsfrontend.viewmodels.PlayerViewModel
@@ -102,7 +103,7 @@ fun IndividualListenScreen(
                 .padding(bottom = 16.dp)
         ) {
             AsyncImage(
-                model = articleState.mainImage,
+                model = articleState.mainImage.ifEmpty { getLogoForSource(articleState.newsSource) },
                 contentDescription = articleState.mainImageDescription ?: "Article thumbnail",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

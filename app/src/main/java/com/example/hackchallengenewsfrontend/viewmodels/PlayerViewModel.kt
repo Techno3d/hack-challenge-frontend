@@ -8,12 +8,14 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.example.hackchallengenewsfrontend.networking.ArticleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.text.toLong
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
@@ -27,7 +29,7 @@ class PlayerViewModel @Inject constructor(
 
     data class AudioUIState(
         val currentPosition: Long = 0L,
-        val duration: Long = 225L, // Default 3:45 in seconds
+        val duration: Long = 225000L, // Default 3:45 in seconds
         val volume: Float = 1f,
         val isPlaying: Boolean = false,
         val currentAudio: MediaItem? = null,
@@ -39,6 +41,7 @@ class PlayerViewModel @Inject constructor(
     
     init {
         _playerState.value = exoPlayer
+        startPositionUpdates()
         _uiStateFlow.value = _uiStateFlow.value.copy(
             currentPosition = _playerState.value?.currentPosition ?: 0,
             duration = _playerState.value?.duration ?: 0,
@@ -47,13 +50,29 @@ class PlayerViewModel @Inject constructor(
         )
     }
 
+    private fun startPositionUpdates(){
+        viewModelScope.launch {
+            while(true) {
+                delay(100)
+                _uiStateFlow.update { currentState ->
+                    currentState.copy(
+                        currentPosition = exoPlayer.currentPosition,
+                        duration = if (exoPlayer.duration > 0) exoPlayer.duration else currentState.duration,
+                        isPlaying = exoPlayer.isPlaying,
+                    )
+                }
+            }
+        }
+    }
+
     fun loadAudio(articleID: Int) {
         viewModelScope.launch {
             exoPlayer.stop()
             val response = articleRepository.getAudio(articleID)
             response.onSuccess { audio ->
                 _uiStateFlow.value = _uiStateFlow.value.copy(
-                    currentAudio = audio
+                    currentAudio = audio,
+                    duration = 225000L
                 )
                 exoPlayer.apply {
                     setMediaItem(audio)
@@ -74,10 +93,10 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun seekTo(position: Float) {
-        exoPlayer.seekTo((position*_uiStateFlow.value.duration).toLong())
-        _uiStateFlow.value = _uiStateFlow.value.copy(
-            currentPosition = (position*_uiStateFlow.value.duration).toLong()
-        )
+        exoPlayer.seekTo((position * _uiStateFlow.value.duration).toLong())
+//        _uiStateFlow.value = _uiStateFlow.value.copy(
+//            currentPosition = (position*_uiStateFlow.value.duration).toLong()
+//        )
     }
 
     fun setVolume(volume: Float) {
@@ -89,14 +108,14 @@ class PlayerViewModel @Inject constructor(
 
     fun skipForward(millis: Long = 15000) {
         val newPosition = _uiStateFlow.value.currentPosition + millis
-        _uiStateFlow.value = _uiStateFlow.value.copy(currentPosition = newPosition)
+        // _uiStateFlow.value = _uiStateFlow.value.copy(currentPosition = newPosition)
         exoPlayer.seekTo(newPosition)
 
     }
 
     fun skipBackward(millis: Long = 15000) {
         val newPosition = _uiStateFlow.value.currentPosition - millis
-        _uiStateFlow.value = _uiStateFlow.value.copy(currentPosition = newPosition)
+        // _uiStateFlow.value = _uiStateFlow.value.copy(currentPosition = newPosition)
         exoPlayer.seekTo(newPosition)
     }
 }

@@ -112,8 +112,7 @@ fun NewsScreen(
             )
             Spacer(Modifier.height(12.dp))
 
-            // Body
-            //TODO Change NewsCard/CompactNewsCard to be not hard-coded
+            //Body
             if (!uiState.feed.isEmpty()) {
                 val firstNewsCard = uiState.feed[0]
                 NewsCard(
