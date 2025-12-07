@@ -116,6 +116,8 @@ fun ArticleViewScreen(
         AsyncImage(
             model = uiState.mainImage.ifEmpty { getLogoForSource(uiState.newsSource) },
             contentDescription = uiState.mainImageDescription,
+            error = painterResource(id = getLogoForSource(uiState.newsSource)),
+            placeholder = painterResource(id = getLogoForSource(uiState.newsSource)),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)

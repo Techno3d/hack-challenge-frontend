@@ -70,6 +70,8 @@ fun NewsCard(
             model = thumbnailUrl.ifEmpty { getLogoForSource(newsSource)},
             contentDescription = thumbnailDescription,
             contentScale = ContentScale.Crop,
+            error = painterResource(id = getLogoForSource(newsSource)),
+            placeholder = painterResource(id = getLogoForSource(newsSource)),
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(4f / 3f)
