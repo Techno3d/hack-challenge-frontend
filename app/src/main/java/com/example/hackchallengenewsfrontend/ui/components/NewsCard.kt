@@ -26,9 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.theme.Articles
 import com.example.hackchallengenewsfrontend.ui.theme.Primary
@@ -67,7 +70,11 @@ fun NewsCard(
             .clickable { onCardClick() }
     ) {
         AsyncImage(
-            model = thumbnailUrl.ifEmpty { getLogoForSource(newsSource)},
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(thumbnailUrl.ifEmpty { getLogoForSource(newsSource) })
+                .crossfade(false)
+                .build(),
+            //model = thumbnailUrl.ifEmpty { getLogoForSource(newsSource)},
             contentDescription = thumbnailDescription,
             contentScale = ContentScale.Crop,
             error = painterResource(id = getLogoForSource(newsSource)),

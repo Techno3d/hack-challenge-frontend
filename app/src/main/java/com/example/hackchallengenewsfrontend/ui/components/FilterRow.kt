@@ -1,6 +1,7 @@
 package com.example.hackchallengenewsfrontend.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -14,14 +15,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.common.math.LinearTransformation.horizontal
 
 @Composable
 fun FilterRow(
     filters: List<String>,
     currentFiltersSelected: List<String>,
+    modifier : Modifier = Modifier,
     onFilterClicked: (String) -> Unit
 ){
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp)){
+    LazyRow(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(5.dp), contentPadding = PaddingValues(horizontal = 22.dp)){
         items(filters){
             filter -> FilterButton(text = filter,
             selected = currentFiltersSelected.contains(filter),
@@ -36,7 +39,9 @@ fun FilterButton(
     selected: Boolean,
     onFilterClicked: () -> Unit
 ){
-    Button(onClick = onFilterClicked, colors =
+    Button(onClick = onFilterClicked,
+        contentPadding = PaddingValues(horizontal = 14.dp, vertical = 4.dp),
+        colors =
     if(selected) {
         ButtonDefaults.buttonColors(Color.White)
     }
@@ -47,8 +52,7 @@ fun FilterButton(
         Text(text = text,
             color = Color.Black,
             fontSize = 14.sp,
-            fontWeight = FontWeight(500),
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 4.dp))
+            fontWeight = FontWeight(600))
     }
 }
 

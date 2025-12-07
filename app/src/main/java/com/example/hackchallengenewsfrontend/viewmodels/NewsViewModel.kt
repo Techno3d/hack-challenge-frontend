@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.hackchallengenewsfrontend.networking.ArticleRepository
 import com.example.hackchallengenewsfrontend.networking.Outlet
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -50,6 +51,7 @@ class NewsViewModel @Inject constructor(
                 .onSuccess { feed ->
                     _allArticles.value = feed
                     filterArticles()
+                    _uiStateFlow.value = _uiStateFlow.value.copy(isLoading = false)
                 }.onFailure {
                     _uiStateFlow.value = _uiStateFlow.value.copy(
                         feed = listOf(
@@ -65,7 +67,8 @@ class NewsViewModel @Inject constructor(
                                 id = -1,
                                 text = "Report the error if you can trust (no one will see this)"
                             )
-                        )
+                        ),
+                        isLoading = false
                     )
                 }
         }
@@ -82,17 +85,39 @@ class NewsViewModel @Inject constructor(
         _searchQuery.value = "" // Clear search when filtering by outlet
 
         viewModelScope.launch {
+            _uiStateFlow.value = _uiStateFlow.value.copy(isLoading = true)
+
+            val startTime = System.currentTimeMillis()
+
             if (outletId == null) {
                 // Show all articles
                 articleRepository.getKNewestArticles(100).onSuccess { articles ->
                     _allArticles.value = articles
                     filterArticles()
+
+                    val elapsedTime = System.currentTimeMillis() - startTime
+                    val remainingDelay = maxOf(0, 500 - elapsedTime)
+                    delay(remainingDelay)
+
+                    _uiStateFlow.value = _uiStateFlow.value.copy(isLoading = false)
+                }.onFailure {
+                    delay(maxOf(0, 500 - (System.currentTimeMillis() - startTime)))
+                    _uiStateFlow.value = _uiStateFlow.value.copy(isLoading = false)
                 }
             } else {
                 // Show articles from selected outlet
                 articleRepository.getTopArticlesByOutlet(outletId, 100).onSuccess { articles ->
                     _allArticles.value = articles
                     filterArticles()
+
+                    val elapsedTime = System.currentTimeMillis() - startTime
+                    val remainingDelay = maxOf(0, 500 - elapsedTime)
+                    delay(remainingDelay)
+
+                    _uiStateFlow.value = _uiStateFlow.value.copy(isLoading = false)
+                }.onFailure{
+                    delay(maxOf(0, 500 - (System.currentTimeMillis() - startTime)))
+                    _uiStateFlow.value = _uiStateFlow.value.copy(isLoading = false)
                 }
             }
         }
@@ -134,7 +159,8 @@ class NewsViewModel @Inject constructor(
 
     data class NewsUIState(
         val feed: List<News> = emptyList(),
-        val filters: List<String> = emptyList<String>()
+        val filters: List<String> = emptyList<String>(),
+        val isLoading: Boolean = true
     ) {
         val filteredFeed: List<News>
             get() = feed
