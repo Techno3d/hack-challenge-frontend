@@ -67,13 +67,6 @@ fun MainListenScreen(
 
     val audioArticles = uiState.feed.filter { true }
 
-    // Filter articles that have audio
-//    val audioArticles = uiState.feed.filter { article ->
-//        // TODO: Replace with actual audio field check when backend provides it
-//        // article.audioUrl != null || article.hasAudio == true
-//        true // For now, showing all articles
-//    }
-
     LazyColumn(
         Modifier
             .fillMaxSize()
@@ -145,7 +138,6 @@ fun MainListenScreen(
         }
 
         // Body
-        //TODO Change NewsCard/CompactNewsCard to be not hard-coded
         item {
             Row(
                 modifier = Modifier

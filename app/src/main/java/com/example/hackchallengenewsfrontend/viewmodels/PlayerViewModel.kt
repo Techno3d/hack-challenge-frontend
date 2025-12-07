@@ -83,7 +83,7 @@ class PlayerViewModel @Inject constructor(
                 print(exoPlayer.duration)
             }
                 .onFailure { error ->
-                    "we fucked up (audio generation)"
+                    "we fucked up the audio generation"
                 }
         }
     }
@@ -108,9 +108,6 @@ class PlayerViewModel @Inject constructor(
 
     fun seekTo(position: Float) {
         exoPlayer.seekTo((position * _uiStateFlow.value.duration).toLong())
-//        _uiStateFlow.value = _uiStateFlow.value.copy(
-//            currentPosition = (position*_uiStateFlow.value.duration).toLong()
-//        )
     }
 
     fun setVolume(volume: Float) {
@@ -122,14 +119,12 @@ class PlayerViewModel @Inject constructor(
 
     fun skipForward(millis: Long = 15000) {
         val newPosition = _uiStateFlow.value.currentPosition + millis
-        // _uiStateFlow.value = _uiStateFlow.value.copy(currentPosition = newPosition)
         exoPlayer.seekTo(newPosition)
 
     }
 
     fun skipBackward(millis: Long = 15000) {
         val newPosition = _uiStateFlow.value.currentPosition - millis
-        // _uiStateFlow.value = _uiStateFlow.value.copy(currentPosition = newPosition)
         exoPlayer.seekTo(newPosition)
     }
 }

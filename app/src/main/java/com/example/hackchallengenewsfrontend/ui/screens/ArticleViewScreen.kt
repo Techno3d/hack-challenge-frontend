@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -85,7 +84,6 @@ fun ArticleViewScreen(
 
             Text(text = uiState.newsSource, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
 
-            //Remember to change color of bookmark button when applicable
             IconButton(onClick = { articleViewModel.toggleFavorite(articleId, uiState.saved) }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_bookmark),
@@ -115,7 +113,6 @@ fun ArticleViewScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        //Placeholder image for viewing purposes
         AsyncImage(
             model = uiState.mainImage.ifEmpty { getLogoForSource(uiState.newsSource) },
             contentDescription = uiState.mainImageDescription,

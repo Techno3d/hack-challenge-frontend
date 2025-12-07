@@ -99,7 +99,8 @@ class NewsViewModel @Inject constructor(
         viewModelScope.launch {
             val loginState = articleRepository.loginInfo
             if(!loginState.value.isLoggedIn) {
-                //articleRepository.registerAccount(username = "janedoe", password = "1234", email = "jane.doe@example.com")
+                //If we need to make a new user, use this code:
+                // articleRepository.registerAccount(username = "janedoe", password = "1234", email = "jane.doe@example.com")
                 articleRepository.login("janedoe", "1234")
             }
             articleRepository.getKNewestArticles(100)

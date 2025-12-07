@@ -67,7 +67,6 @@ fun CompactNewsCard(
             model = thumbnailUrl.ifEmpty { getLogoForSource(newsSource) },
             contentDescription = thumbnailDescription,
             contentScale = ContentScale.Crop,
-//            placeholder = ,
             modifier = Modifier
                 .width(115.dp)
                 .height(115.dp)
