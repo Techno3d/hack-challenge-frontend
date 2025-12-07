@@ -189,4 +189,34 @@ class ArticleRepository @Inject constructor(
         }
         return Result.success(MediaItem.fromUri("http://35.186.167.11:5000/audios/$audioFileName".toUri()))
     }
+
+    suspend fun getAllOutlets(): Result<List<Outlet>> {
+        val response = articleApiService.getAllOutlets()
+        if (!response.isSuccessful) return Result.failure(Throwable(message = response.errorBody().toString()))
+        return Result.success(response.body()!!)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    suspend fun getTopArticlesByOutlet(outletId: Int, numArticles: Int): Result<List<News>> {
+        val response = articleApiService.getTopArticlesByOutlet(outletId, numArticles)
+        if (!response.isSuccessful) return Result.failure(Throwable(message = response.errorBody().toString()))
+        val articles = response.body()?.map { article ->
+            News(
+                title = article.title,
+                author = article.author,
+                newsSource = article.outlet.name,
+                articleUrl = article.link,
+                tags = listOf(article.outlet.name),
+                thumbnailUrl = article.imageUrl,
+                thumbnailDescription = null,
+                date = LocalDateTime.parse(article.publishingDate),
+                id = article.id,
+                text = article.text,
+                audioFileName = article.audioFile,
+                saved = article.saved ?: false
+            )
+        }
+        return Result.success(articles!!)
+    }
+
 }

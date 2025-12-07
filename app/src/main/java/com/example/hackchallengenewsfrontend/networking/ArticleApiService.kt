@@ -41,6 +41,16 @@ interface ArticleApiService {
         @Path("article_id") articleId: Int
     ): Response<Message>
 
+    @GET("outlets")
+    suspend fun getAllOutlets(): Response<List<Outlet>>
+
+    @GET("articles/outlet/{outlet_id}/top/{top_k}")
+    suspend fun getTopArticlesByOutlet(
+        @Path("outlet_id") outletId: Int,
+        @Path("top_k") numArticles: Int
+    ): Response<List<Article>>
+
+
 //    @Streaming
 //    @GET("audios/{filename}")
 //    suspend fun serveAudio(

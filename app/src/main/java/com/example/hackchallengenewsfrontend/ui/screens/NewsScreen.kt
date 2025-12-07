@@ -43,6 +43,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.hackchallengenewsfrontend.R
 import com.example.hackchallengenewsfrontend.ui.components.CompactNewsCard
+import com.example.hackchallengenewsfrontend.ui.components.FilterRow
 import com.example.hackchallengenewsfrontend.ui.components.NewsCard
 import com.example.hackchallengenewsfrontend.ui.components.ScopeSearchBar
 import com.example.hackchallengenewsfrontend.ui.theme.Background
@@ -54,6 +55,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.math.abs
+import kotlin.text.get
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -126,6 +128,34 @@ fun NewsScreen(
 //                currentFiltersSelected = listOf("CU Nooz")
 //            ) { }
 //          Spacer(Modifier.height(24.dp))
+// Add outlet filtering - place after AnimatedVisibility and before "Top Stories"
+            val availableOutlets by newsViewModel.availableOutlets.collectAsStateWithLifecycle()
+            val selectedOutletId by newsViewModel.selectedOutletId.collectAsStateWithLifecycle()
+
+            val outletFilters = remember(availableOutlets) {
+                buildMap {
+                    put(null, "All")
+                    availableOutlets.forEach { outlet ->
+                        put(outlet.id, outlet.name)
+                    }
+                }
+            }
+
+            if (outletFilters.size > 1) {
+                Spacer(Modifier.height(16.dp))
+                FilterRow(
+                    filters = outletFilters.values.toList(),
+                    currentFiltersSelected = listOf(
+                        outletFilters[selectedOutletId] ?: "All"
+                    )
+                ) { selectedFilter ->
+                    val outletId = outletFilters.entries.find { it.value == selectedFilter }?.key
+                    newsViewModel.selectOutlet(outletId)
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
             Text(
                 "Top Stories",
                 modifier = Modifier.fillMaxWidth().padding(vertical = 2.dp),
